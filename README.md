@@ -6,7 +6,8 @@ edit ceiloparameters.txt
 run:
 > screen
 > python loop_v1606.py
-# Esto corre todos los dentos dentro de la carpeta especificada en el input file. Para correr dias específicos, copiarlos a otra carpeta temporal y cambiar la ruta. 
+
+Esto corre todos los datos dentro de la carpeta especificada en el input file. Para correr dias específicos, copiarlos a otra carpeta temporal y cambiar la ruta. 
 
 eog para abrir png's
 
