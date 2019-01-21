@@ -1,0 +1,30 @@
+ESTACION
+UNAM
+PI_NAME
+Grutter;Michel
+PI_AFFILIATION 
+Universidad Nacional Autonoma de Mexico; UNAM
+PI_ADDRESS
+Centro de Ciencias de la Atmosfera UNAM;04510 Mexico City, Mexico
+PI_EMAIL
+grutter@unam.mx
+DO_NAME
+Garcia;Jorge
+DATA_DESCRIPTION
+Ceilometer Backscatter signal
+DATA_INSTRUMENT
+Ceilometer Vaisal CL31, S/N 134640006
+DATA_LOCATION
+CCA, UNAM
+DATA_LATITUDE
+19.3261
+DATA_LONGITUDE
+-99.1761
+DATA_TIME_ZONE
+UTC-06
+DATA_TIME_RES
+10 min
+DATA_RANGE
+10-5000 m
+DATA_VERTICAL_RES
+10 m
