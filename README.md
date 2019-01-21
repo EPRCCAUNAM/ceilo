@@ -17,14 +17,22 @@ eog para abrir png's
 Default settings para ERNO:
 
 Main directory5
+
 /home/D1_CEILO/ERNO/CL2/
+
 Output Directory
 
 /home/D1_CEILO/ERNO/Results_day/
+
 Run Version
+
 201709
+
 Averaging time window (in minutes)
+
 10
+
 Estación 
+
 ERNO
 
