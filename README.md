@@ -1,6 +1,8 @@
 # ceilo
 Scripts para procesar datos del Ceilometro Vaisala CL31 de la UNAM
 
+Creado por Jorge Luis García Franco (2017)
+
 edit ceiloparameters.txt
 
 run:
