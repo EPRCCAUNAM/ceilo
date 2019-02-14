@@ -1,0 +1,11 @@
+Main directory5
+/home/jlgf/Documents/Python/scripts/
+Output Directory
+/home/jlgf/Documents/Python/
+Run Version 
+Angel
+Averaging time window (in minutes)
+10
+Estación 
+JQRO
+

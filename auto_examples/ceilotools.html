@@ -1,0 +1,887 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Ceilo tools module &mdash; Boundary Layer Ceilometer Retrieval 1.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Boundary Layer Ceilometer Retrieval 1.0.1 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../master.html" class="icon icon-home"> Boundary Layer Ceilometer Retrieval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Ceilo tools module</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../master.html">Boundary Layer Ceilometer Retrieval</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../master.html">Docs</a> &raquo;</li>
+        
+      <li>Ceilo tools module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/auto_examples/ceilotools.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ceilo-tools-module">
+<span id="sphx-glr-auto-examples-ceilotools-py"></span><h1>Ceilo tools module<a class="headerlink" href="#ceilo-tools-module" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>This is the main toolbox designed to aid main processsing by reading and writing to files and processing data.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">wavelets</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">histogram</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">ntot</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">xmax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">xmin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">dx</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">xmax</span><span class="o">-</span><span class="n">xmin</span><span class="p">)</span><span class="o">/</span><span class="n">N</span>
+    <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">*</span><span class="n">dx</span><span class="o">+</span><span class="n">xmin</span>
+    <span class="n">hist</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">unbin</span> <span class="ow">in</span> <span class="n">bins</span><span class="p">:</span>
+            <span class="n">index</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">unbin</span> <span class="p">,</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">unbin</span><span class="o">+</span><span class="n">dx</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">hist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">))</span><span class="o">/</span><span class="n">ntot</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">bins</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hist</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">frange</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">stop</span><span class="p">,</span><span class="n">step</span><span class="p">):</span>
+    <span class="n">vec</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">stop</span><span class="o">-</span><span class="n">start</span><span class="p">)</span><span class="o">/</span><span class="n">step</span><span class="p">)</span>
+    <span class="n">num</span><span class="o">=</span><span class="n">start</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vec</span><span class="p">):</span>
+            <span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">num</span>
+            <span class="n">num</span><span class="o">=</span><span class="n">num</span><span class="o">+</span><span class="n">step</span>
+    <span class="k">return</span> <span class="n">vec</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">roundt</span><span class="p">(</span><span class="n">minutos</span><span class="p">,</span><span class="n">segundos</span><span class="p">):</span>
+    <span class="n">dif</span><span class="o">=</span><span class="n">minutos</span><span class="o">-</span><span class="mi">10</span>
+    <span class="n">count</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">minutseg</span><span class="o">=</span><span class="n">minutos</span><span class="o">+</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">segundos</span><span class="p">)</span><span class="o">/</span><span class="mf">60.0</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">dif</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">dif</span><span class="o">=</span><span class="n">dif</span><span class="o">-</span><span class="mi">10</span>
+            <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="o">+</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="n">minutseg</span> <span class="o">&gt;=</span><span class="mi">9</span> <span class="o">+</span> <span class="p">(</span><span class="n">count</span><span class="o">*</span><span class="mi">10</span><span class="p">):</span>
+            <span class="n">minutos</span><span class="o">=</span><span class="p">(</span><span class="n">count</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span>
+    <span class="k">else</span><span class="p">:</span>
+            <span class="n">minutos</span><span class="o">=</span><span class="n">count</span><span class="o">*</span><span class="mi">10</span>
+    <span class="k">return</span> <span class="n">minutos</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">writemlh</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span><span class="n">horas</span><span class="p">,</span><span class="n">mlhs</span><span class="p">,</span><span class="n">station</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Write of mixed-layer file to txt file, using standard heading. For instance:</span>
+
+<span class="sd">    **Parameters**</span>
+
+<span class="sd">    **outputfile**: `string`</span>
+<span class="sd">        Output filename. Usually a &#39;txt&#39;.</span>
+<span class="sd">    **horas** : `numpy.narray-float`</span>
+<span class="sd">        Time vector as hourly decimals. 0., 0.166, ..., 23.83.</span>
+<span class="sd">    **mlhs** : `numpy.narray-float`</span>
+<span class="sd">        Mixed-layer heights vector.</span>
+<span class="sd">    **station*: `string`</span>
+<span class="sd">            Station string</span>
+
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    *See Also*</span>
+
+<span class="sd">    :ref:`secondary`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fout</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Ceilometer Vaisala CL31. 10 min averages in &quot;</span><span class="o">+</span><span class="n">station</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;MLH from Gradient method. Espectroscopia y Percepcion Remota, CCA-UNAM</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Version: 201801  &quot;</span>  <span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;http://www.atmosfera.unam.mx/espectroscopia/ceilo/</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Decimal.hour  MLH(m)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">unamlh</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mlhs</span><span class="p">):</span>
+            <span class="n">timeh</span><span class="o">=</span><span class="n">horas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.3f</span><span class="s2">         </span><span class="si">%i</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">timeh</span><span class="p">,</span><span class="n">unamlh</span><span class="p">))</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">writematrix</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span><span class="n">zeta</span><span class="p">,</span><span class="n">hour_vec</span><span class="p">,</span><span class="n">station</span><span class="p">,</span><span class="n">date</span><span class="p">,</span><span class="n">runv</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Write of backscattering matrix to txt file, using standard heading. For instance:</span>
+
+<span class="sd">    **Parameters**</span>
+
+<span class="sd">    **outputfile**: `string`</span>
+<span class="sd">        Output filename. Usually a &#39;txt&#39;.</span>
+<span class="sd">    **matrix**: `numpy.nadarray`</span>
+<span class="sd">        Backscattering matrix mxn where m is the length of time vector, or number of decimal hours in the particular day and n is the length of height vector, usually 500 (10-5000 m every 10 m).</span>
+<span class="sd">    **hour_vec** : `numpy.narray-float`</span>
+<span class="sd">        Time vector as hourly decimals. 0., 0.166, ..., 23.83.</span>
+<span class="sd">    **date** : `string`</span>
+<span class="sd">        Date of measurement (typically %Y%m%d)</span>
+<span class="sd">    **station*: `string`</span>
+<span class="sd">            Station string</span>
+
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    *See Also*</span>
+
+<span class="sd">    :ref:`writemlh`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fout</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Datos de retrodispersion en &quot;</span><span class="o">+</span> <span class="n">station</span> <span class="o">+</span> <span class="n">date</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Ceilometro Vaisela CL31 </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Version del codigo: 201605</span><span class="se">\n</span><span class="s2">&quot;</span>  <span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;http://www.atmosfera.unam.mx/espectroscopia/ceilo/</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Contacto: Espectroscopia y Percepcion Remota, CCA-UNAM</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Corrida de nombre &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">runv</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="p">)</span>
+    <span class="n">zstring</span><span class="o">=</span><span class="s2">&quot;niveles:&quot;</span>
+    <span class="k">for</span> <span class="n">zval</span> <span class="ow">in</span> <span class="n">zeta</span><span class="p">:</span>
+            <span class="n">zstring</span><span class="o">=</span><span class="n">zstring</span><span class="o">+</span><span class="s2">&quot; </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">zval</span><span class="p">)</span>
+    <span class="n">tstring</span> <span class="o">=</span><span class="s2">&quot;horas: &quot;</span>
+    <span class="k">for</span> <span class="n">tval</span> <span class="ow">in</span> <span class="n">hour_vec</span><span class="p">:</span>
+            <span class="n">tstring</span><span class="o">=</span><span class="n">tstring</span><span class="o">+</span><span class="s2">&quot; </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tval</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">zstring</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tstring</span> <span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">vec</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span><span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vec</span><span class="p">):</span>
+
+                    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="c1">#Funcion para calcular promedios horarios para un dia, o para un archivo.</span>
+<span class="c1">#MLHAVERAGE.</span>
+<span class="k">def</span> <span class="nf">onedayavg</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">horas</span><span class="p">):</span>
+    <span class="n">data</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">skip_header</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">mlh</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">indices</span><span class="o">=</span><span class="p">[]</span>
+    <span class="c1">#Definicion de tiempo minimo, leido del archivo.</span>
+    <span class="n">tmin</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">time</span><span class="p">))</span>
+    <span class="n">tmax</span><span class="o">=</span><span class="n">tmin</span><span class="o">+</span><span class="mi">1</span>
+    <span class="c1">#Definicion de tiempo maximo en el archivo.</span>
+    <span class="n">maximo</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+    <span class="n">promedios</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">files</span><span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">promedios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">h</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">horas</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">tmin</span><span class="o">&gt;</span><span class="n">horas</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">promedios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">tt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="n">tt</span><span class="o">&gt;=</span><span class="n">tmin</span> <span class="ow">and</span> <span class="n">tt</span> <span class="o">&lt;</span><span class="n">tmax</span><span class="p">:</span>
+                    <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mlh</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">tt</span> <span class="o">==</span> <span class="n">maximo</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
+                            <span class="n">avg</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+                            <span class="n">promedios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg</span><span class="p">)</span>
+
+            <span class="k">else</span> <span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
+                            <span class="n">avg</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                            <span class="n">avg</span><span class="o">=</span><span class="s1">&#39; &#39;</span>
+                    <span class="n">promedios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg</span><span class="p">)</span>
+                    <span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">tmin</span><span class="o">=</span> <span class="n">tmin</span><span class="o">+</span><span class="mi">1</span>
+                    <span class="n">tmax</span><span class="o">=</span> <span class="n">tmax</span><span class="o">+</span><span class="mi">1</span>
+                    <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mlh</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+
+
+    <span class="k">return</span> <span class="n">promedios</span>
+<span class="k">def</span> <span class="nf">readmlh</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Write of backscattering matrix to txt file, using standard heading. For instance:</span>
+
+<span class="sd">    **Parameters**</span>
+
+<span class="sd">    **filename**:`string`</span>
+<span class="sd">        Input filename. Usually a &#39;txt&#39;.</span>
+
+<span class="sd">    :rtype:time-array, mlh-array:  time and MLH vector.</span>
+
+<span class="sd">    *See Also*</span>
+
+<span class="sd">    :meth:`writemlh` , :meth:`readmatrixfile`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">profil</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">skip_header</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">profil</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">profil</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">readmatrixfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Write of backscattering matrix to txt file, using standard heading. For instance:</span>
+
+<span class="sd">    **Parameters**</span>
+
+<span class="sd">    **filename**: `string`</span>
+<span class="sd">        Input filename. Usually a &#39;txt&#39;.</span>
+
+<span class="sd">    :rtype: z,tarr,allprf height and time vector and backscattering matrix.</span>
+
+<span class="sd">    *See Also*</span>
+
+<span class="sd">    :meth:`writemlh`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m</span><span class="o">=</span><span class="mi">6</span>
+    <span class="n">y</span><span class="o">=</span><span class="mi">8</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+
+    <span class="n">z</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:],</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">tarr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:],</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">allprf</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">skip_header</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+    <span class="c1">#       print tarr</span>
+    <span class="c1">#       print allprf.shape</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">z</span><span class="p">,</span><span class="n">tarr</span><span class="p">,</span><span class="n">allprf</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">insertmatrix</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+    <span class="n">data</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">skip_header</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">mlh</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">tt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">tt</span><span class="o">==</span><span class="n">t</span><span class="p">:</span>
+
+                    <span class="n">height</span><span class="o">=</span><span class="n">mlh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">height</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">runningMeanFast</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Running mean of array x over a window of size N.</span>
+
+<span class="sd">    **Parameters**</span>
+
+<span class="sd">    **x**: `np.array`</span>
+<span class="sd">        Numpy array, usually 1D, to average over a moving or running mean.</span>
+<span class="sd">    **N**: `numpy.nadarray`</span>
+<span class="sd">        Size of moving average window.</span>
+
+<span class="sd">    :rtype: `np.array` averaged with running mean.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        This script makes use of numpy.convolve.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ravg</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">N</span><span class="p">,))</span><span class="o">/</span><span class="n">N</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">)[(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">):]</span>
+    <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">ravg</span><span class="p">)</span>
+    <span class="n">dif</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">ravg</span><span class="p">)</span>
+    <span class="n">apendix</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dif</span><span class="p">)</span>
+    <span class="n">counter</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">apendix</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">apendix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">apendix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="n">counter</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.0</span>
+            <span class="k">else</span><span class="p">:</span>
+                    <span class="n">apendix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="n">counter</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">counter</span><span class="o">+=</span><span class="mi">1</span>
+            <span class="c1">#apendix[i]=np.sum(x[i-2:i+1])/3.0</span>
+    <span class="n">ravg</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">ravg</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">apendix</span><span class="p">)</span>
+    <span class="c1">#print len(ravg),len(x)</span>
+    <span class="c1">#print ravg</span>
+    <span class="k">return</span> <span class="n">ravg</span>
+<span class="c1">#USOS EN CEILOV</span>
+<span class="k">def</span> <span class="nf">writenumofprof</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span><span class="n">numofprof</span><span class="p">,</span><span class="n">t</span><span class="p">,</span> <span class="n">estacion</span><span class="p">,</span><span class="n">date</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Write number of backscattering profiles used for every 10-min averaged window.</span>
+
+<span class="sd">    **Parameters**</span>
+
+<span class="sd">    **outputfile**: `string`</span>
+<span class="sd">        Output filename. Usually a &#39;txt&#39;.</span>
+<span class="sd">    **numofprof**: `int`</span>
+<span class="sd">        Number of profiles used for average</span>
+<span class="sd">    **t** : `numpy.narray-float`</span>
+<span class="sd">        Time vector as hourly decimals. 0., 0.166, ..., 23.83.</span>
+<span class="sd">    **date** : `string`</span>
+<span class="sd">        Date of measurement (typically %Y%m%d)</span>
+<span class="sd">    **estacion*: `string`</span>
+<span class="sd">            Station string</span>
+
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    *See Also*</span>
+
+<span class="sd">    :meth:`writematrix`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fout</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Datos de perfiles promediados &quot;</span><span class="o">+</span> <span class="n">estacion</span> <span class="o">+</span> <span class="n">date</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">6</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Ceilometro Vaisala CL31 </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Version del codigo: 2016 05 </span><span class="se">\n</span><span class="s2">&quot;</span>  <span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;http://www.atmosfera.unam.mx/espectroscopia/ceilo/</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Contacto: Espectroscopia y Percepcion Remota, CCA-UNAM</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">tstring</span> <span class="o">=</span><span class="s2">&quot;horas: &quot;</span>
+    <span class="k">for</span> <span class="n">tval</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
+            <span class="n">tstring</span><span class="o">=</span><span class="n">tstring</span><span class="o">+</span><span class="s2">&quot; </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tval</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tstring</span> <span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">prof</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">numofprof</span><span class="p">):</span>
+            <span class="n">timeh</span><span class="o">=</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.3f</span><span class="s2">         </span><span class="si">%i</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">timeh</span><span class="p">,</span><span class="n">prof</span><span class="p">))</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">writeavgmatrix</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span><span class="n">tvec</span><span class="p">,</span><span class="n">estacion</span><span class="p">,</span><span class="n">matrix</span><span class="p">,</span><span class="n">runv</span><span class="p">,</span><span class="n">averages</span><span class="p">):</span>
+    <span class="n">fout</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Matriz de datos diarios a promediar&#39;</span> <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Ceilometro Vaisala CL31 &#39;</span><span class="o">+</span><span class="n">estacion</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Corrida correspondiente a &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">runv</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">tstring</span><span class="o">=</span><span class="s1">&#39;Tiempo (horas):&#39;</span>
+    <span class="n">avg</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">h</span><span class="p">,</span><span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tvec</span><span class="p">):</span>
+            <span class="n">tstring</span><span class="o">=</span><span class="n">tstring</span><span class="o">+</span><span class="s2">&quot; </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="n">avg</span><span class="o">=</span><span class="n">avg</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">averages</span><span class="p">[</span><span class="n">h</span><span class="p">])</span><span class="o">+</span><span class="s1">&#39; &#39;</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tstring</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">flistsize</span><span class="o">=</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">tvec</span><span class="o">=</span><span class="n">flistsize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">fvec</span><span class="o">=</span><span class="n">flistsize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">fvec</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tvec</span><span class="p">):</span>
+                    <span class="n">point</span><span class="o">=</span><span class="n">matrix</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">]</span>
+                    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">point</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+            <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">avg</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Usados en Avgmlh REDONDEANDO.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">insrtmatrxrnd</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">trthval</span><span class="p">):</span>
+    <span class="n">data</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">skip_header</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">mlh</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">tt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">tt</span> <span class="o">&gt;</span> <span class="mf">23.3</span><span class="p">:</span>
+                    <span class="n">base</span><span class="o">=</span><span class="mf">2.0</span><span class="o">/</span><span class="mf">6.0</span>
+            <span class="k">else</span><span class="p">:</span>
+                    <span class="n">base</span><span class="o">=</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">6.0</span>
+            <span class="k">if</span> <span class="n">myround</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span><span class="n">base</span><span class="p">)</span><span class="o">==</span><span class="n">t</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">trthval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">False</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">mlh</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">&lt;=</span><span class="mi">60</span><span class="p">:</span>
+                            <span class="n">height</span><span class="o">=</span><span class="mi">0</span>
+                    <span class="k">else</span><span class="p">:</span>
+                            <span class="n">height</span><span class="o">=</span><span class="n">mlh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="k">break</span>
+    <span class="k">return</span> <span class="n">height</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">addtovecrnd</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">tvec</span><span class="p">):</span>
+    <span class="n">data</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">skip_header</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">mlh</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">tt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">tt</span> <span class="o">&gt;</span> <span class="mf">23.3</span><span class="p">:</span>
+                    <span class="n">base</span><span class="o">=</span><span class="mf">2.0</span><span class="o">/</span><span class="mf">6.0</span>
+            <span class="k">else</span><span class="p">:</span>
+                    <span class="n">base</span><span class="o">=</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">6.0</span>
+            <span class="k">if</span> <span class="n">myround</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span><span class="n">base</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tvec</span><span class="p">:</span>
+                    <span class="n">tvec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myround</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span><span class="n">base</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">tvec</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">myround</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">base</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">base</span> <span class="o">*</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">base</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">ipmthd</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span><span class="n">lowlm</span><span class="p">,</span><span class="n">z</span><span class="p">):</span>
+    <span class="n">ipm</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span>
+    <span class="n">newmlh</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">ipm</span><span class="p">)</span>
+    <span class="n">mlh</span><span class="o">=</span><span class="n">z</span><span class="p">[</span><span class="n">newmlh</span><span class="o">+</span><span class="n">lowlm</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">mlh</span>
+<span class="k">def</span> <span class="nf">algmlh</span><span class="p">(</span><span class="n">allprf</span><span class="p">,</span><span class="n">method</span><span class="p">,</span><span class="n">mlh</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">tarr</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">uplim</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Algorithms used for Mixed-layer Height determination.This script computes the mlh through an iterative approach and calls the relevant method.</span>
+
+<span class="sd">    A combined approach, named C2, due to the fact that it was the second version of a Combined algorithm uses both the gradient method and the wavelet method to find the boundary layer top. This was the algorithm used in :cite:`jlgf2018`.</span>
+
+<span class="sd">    **Parameters**</span>
+
+<span class="sd">    **allprf**: `np.nadarray`</span>
+<span class="sd">        backscattering matrix</span>
+<span class="sd">    **method**: `string`</span>
+<span class="sd">        String calling a MLH determination method, either of the following strings are accepted: &#39;WT&#39;, &#39;Gradient&#39;, &#39;IPM&#39;, &#39;C2&#39;.</span>
+<span class="sd">    **tarr** : `np.array`</span>
+<span class="sd">        Time-array, usually decimal hours.</span>
+<span class="sd">    **mlh** : `numpy.nadarray`</span>
+<span class="sd">        Mixed-layer height array, usually len(mlh)=144.</span>
+<span class="sd">    **i** : `int`</span>
+<span class="sd">       Integer of current time-step. Ranging from 0-143.</span>
+<span class="sd">    **z** : `np.array`</span>
+<span class="sd">            Height-array usually length 500, start=10, end=5000, t_step=10 [m]</span>
+<span class="sd">    **t** : `numpy.narray-float`</span>
+<span class="sd">        Time float of this specific computation.</span>
+<span class="sd">    **uplim** : `string`</span>
+<span class="sd">        Upper-limit of maximum MLH possible.</span>
+
+<span class="sd">    :rtype: mlh: float</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">            **See Also functions to estimate and write mlh**</span>
+
+<span class="sd">        :meth:`writemlh`</span>
+<span class="sd">        :meth:`ipf`</span>
+<span class="sd">        :meth:`wavelets`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">jk</span><span class="o">=</span><span class="n">i</span>
+    <span class="n">lowlim</span><span class="o">=</span><span class="mi">20</span>
+    <span class="n">uplim</span><span class="o">=</span><span class="n">uplim</span>
+<span class="c1">#   if t &lt;8. and t &gt;4.:</span>
+<span class="c1">#           uplim=90</span>
+<span class="c1">#   elif t&lt;=4. or (t&gt;=21. and t&lt;=24.):</span>
+<span class="c1">#           uplim=120</span>
+<span class="c1">#   elif (t&gt;=8. and t&lt;12.) or (t&gt;18. and t&lt;21.):</span>
+<span class="c1">#           uplim=140</span>
+<span class="c1">#   elif (t&gt;=12. and t&lt;= 14.):</span>
+<span class="c1">#           uplim=150</span>
+<span class="c1">#   else:</span>
+<span class="c1">#           uplim=200</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">255</span><span class="p">:</span>
+<span class="c1">#           uplm=2*uplim</span>
+            <span class="c1">#print uplim, lowlim,i</span>
+            <span class="n">lowlm</span><span class="o">=</span><span class="n">lowlim</span>
+            <span class="n">a1</span><span class="o">=</span><span class="mi">2</span>
+            <span class="n">a2</span><span class="o">=</span><span class="mi">10</span>
+            <span class="n">fi</span><span class="o">=</span><span class="n">a2</span>
+            <span class="n">nn</span><span class="o">=</span><span class="mi">1</span>
+            <span class="k">try</span><span class="p">:</span>
+                    <span class="n">vec</span><span class="o">=</span><span class="n">allprf</span><span class="p">[</span><span class="n">lowlim</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">uplim</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">jk</span><span class="p">]</span><span class="o">-</span><span class="n">allprf</span><span class="p">[</span><span class="n">lowlim</span><span class="p">:</span><span class="n">uplim</span><span class="p">,</span><span class="n">jk</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                    <span class="k">return</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&lt;=</span><span class="mi">250</span><span class="p">:</span>
+            <span class="n">lowlm</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">lowlim</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
+            <span class="n">vec</span><span class="o">=</span><span class="n">allprf</span><span class="p">[</span><span class="n">lowlm</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">uplim</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">jk</span><span class="p">]</span><span class="o">-</span><span class="n">allprf</span><span class="p">[</span><span class="n">lowlm</span><span class="p">:</span><span class="n">uplim</span><span class="p">,</span><span class="n">jk</span><span class="p">]</span>
+            <span class="n">a1</span><span class="o">=</span><span class="mi">1</span>
+            <span class="n">a2</span><span class="o">=</span><span class="mi">20</span>
+            <span class="n">fi</span><span class="o">=</span><span class="mi">5</span>
+            <span class="n">nn</span><span class="o">=</span><span class="mi">2</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;Gradient&#39;</span> <span class="ow">or</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;Composite 1&#39;</span> <span class="ow">or</span> <span class="n">method</span> <span class="o">==</span><span class="s1">&#39;C2&#39;</span><span class="p">:</span>
+            <span class="n">imin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span>
+            <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">]</span><span class="o">=</span><span class="n">z</span><span class="p">[</span><span class="n">imin</span><span class="o">+</span><span class="p">(</span><span class="n">lowlm</span><span class="p">)]</span>
+            <span class="c1">#if method==&#39;C2&#39;:</span>
+            <span class="c1">#       print t,mlh[jk]</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;Ipm&#39;</span><span class="p">:</span>
+            <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">]</span><span class="o">=</span><span class="n">ipmthd</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span><span class="n">lowlm</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;WT&#39;</span><span class="p">:</span>
+            <span class="n">a</span><span class="o">=</span><span class="mi">120</span><span class="o">/</span><span class="n">a1</span>
+
+            <span class="n">bot</span><span class="p">,</span><span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">],</span><span class="n">top</span><span class="o">=</span><span class="n">haarcovtransfm</span><span class="p">(</span><span class="n">allprf</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">jk</span><span class="p">,</span><span class="s1">&#39;Auto&#39;</span><span class="p">,</span><span class="n">fi</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">uplim</span><span class="o">*</span><span class="mi">10</span><span class="o">*</span><span class="n">nn</span><span class="p">,</span><span class="n">lowlim</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;Composite 1&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">]</span><span class="o">&lt;=</span><span class="mi">120</span> <span class="ow">or</span> <span class="p">(</span><span class="n">jk</span><span class="o">&gt;</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">]</span> <span class="o">-</span> <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">)</span> <span class="p">:</span>
+                    <span class="n">ipm</span><span class="o">=</span><span class="n">ipmthd</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span><span class="n">lowlm</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">ipm</span><span class="o">&lt;=</span><span class="mi">120</span> <span class="ow">or</span> <span class="p">(</span><span class="n">jk</span><span class="o">&gt;</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">ipm</span> <span class="o">-</span> <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">700</span><span class="p">):</span>
+                            <span class="c1">#print &#39;!!!! Valor anomalo en la hora&#39;, tarr[jk]</span>
+                            <span class="c1">#print &#39;Gradiente =&#39;, mlh[jk]</span>
+                            <span class="c1">#print &#39;Ipm = &#39;, ipm</span>
+                            <span class="n">a</span><span class="o">=</span><span class="mi">120</span><span class="o">/</span><span class="n">a1</span>
+                            <span class="n">b</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">4000</span><span class="p">,</span><span class="n">a2</span><span class="p">)</span>
+                            <span class="n">newmlh</span><span class="o">=</span><span class="n">haarcovtransfm</span><span class="p">(</span><span class="n">allprf</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">jk</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">fi</span><span class="p">)</span>
+                            <span class="n">bottom</span><span class="o">=</span><span class="mi">120</span>
+                            <span class="n">low</span><span class="o">=</span><span class="mi">100</span>
+                            <span class="k">while</span> <span class="n">newmlh</span><span class="o">&lt;=</span> <span class="n">bottom</span><span class="p">:</span>
+                                            <span class="n">low</span><span class="o">=</span><span class="n">low</span><span class="o">+</span><span class="n">fi</span>
+                                            <span class="n">bottom</span><span class="o">=</span><span class="n">low</span>
+                                            <span class="n">b</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="n">low</span><span class="p">,</span><span class="mi">4000</span><span class="p">,</span><span class="n">a2</span><span class="p">)</span>
+                                            <span class="n">newmlh</span><span class="o">=</span><span class="n">haarcovtransfm</span><span class="p">(</span><span class="n">allprf</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">jk</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">fi</span><span class="p">)</span>
+                                            <span class="k">if</span> <span class="n">bottom</span> <span class="o">&gt;=</span> <span class="mi">1000</span><span class="p">:</span>
+                                                    <span class="k">break</span>
+                            <span class="k">if</span> <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">120</span><span class="p">:</span>
+                                    <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ipm</span><span class="o">+</span><span class="n">newmlh</span><span class="o">+</span><span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">])</span><span class="o">/</span><span class="mf">3.</span>
+                            <span class="k">elif</span> <span class="n">ipm</span> <span class="o">-</span> <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1300</span><span class="p">:</span>
+                                    <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ipm</span><span class="o">+</span><span class="n">newmlh</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                    <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">]</span><span class="o">=</span><span class="n">newmlh</span>
+
+                            <span class="c1">#print &#39;WT iterative =&#39;, newmlh</span>
+                    <span class="k">elif</span> <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">120</span><span class="p">:</span>
+                            <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">ipm</span><span class="o">+</span><span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span>
+
+                    <span class="c1">#print &#39;Anterior, Final &#39;,mlh[jk-1], mlh[jk]</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;C2&#39;</span><span class="p">:</span>
+            <span class="c1">#print mlh[jk]</span>
+            <span class="k">if</span> <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">]</span><span class="o">&lt;=</span><span class="p">(</span><span class="n">lowlim</span><span class="o">*</span><span class="mi">10</span><span class="o">+</span><span class="mi">50</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">jk</span><span class="o">&gt;</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">]</span> <span class="o">-</span> <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">):</span>
+                    <span class="n">a</span><span class="o">=</span><span class="mi">120</span><span class="o">/</span><span class="n">a1</span>
+                    <span class="n">bot</span><span class="p">,</span><span class="n">newmlh</span><span class="p">,</span><span class="n">top</span><span class="o">=</span><span class="n">haarcovtransfm</span><span class="p">(</span><span class="n">allprf</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">jk</span><span class="p">,</span><span class="s1">&#39;Auto&#39;</span><span class="p">,</span><span class="n">fi</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">uplim</span><span class="o">*</span><span class="mi">10</span><span class="o">*</span><span class="n">nn</span><span class="p">,</span><span class="n">lowlim</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+            <span class="c1">#       print t, mlh[jk],newmlh</span>
+                    <span class="k">if</span> <span class="n">newmlh</span> <span class="o">-</span><span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">:</span>
+                            <span class="n">upper</span><span class="o">=</span><span class="n">uplim</span><span class="o">*</span><span class="mi">10</span><span class="o">*</span><span class="n">nn</span>
+                            <span class="k">while</span> <span class="n">upper</span> <span class="o">-</span> <span class="n">newmlh</span> <span class="o">&lt;</span> <span class="mf">500.</span> <span class="ow">and</span> <span class="n">upper</span> <span class="o">&gt;</span> <span class="mf">2500.</span><span class="p">:</span>
+                                    <span class="n">upper</span><span class="o">=</span><span class="n">upper</span><span class="o">-</span><span class="mi">100</span>
+                                    <span class="n">bot</span><span class="p">,</span><span class="n">newmlh</span><span class="p">,</span><span class="n">top</span><span class="o">=</span><span class="n">haarcovtransfm</span><span class="p">(</span><span class="n">allprf</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">jk</span><span class="p">,</span><span class="s1">&#39;Auto&#39;</span><span class="p">,</span><span class="n">fi</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">upper</span><span class="p">,</span><span class="n">lowlim</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+                                    <span class="c1">#print newmlh</span>
+                    <span class="k">if</span> <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">]</span><span class="o">&gt;</span><span class="p">(</span><span class="n">lowlim</span><span class="o">*</span><span class="mi">10</span><span class="o">+</span><span class="mi">50</span><span class="p">)</span> <span class="ow">or</span> <span class="n">newmlh</span><span class="o">&lt;=</span><span class="p">(</span><span class="n">lowlim</span><span class="o">*</span><span class="mi">10</span><span class="o">+</span><span class="mi">50</span><span class="p">):</span>
+                            <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">newmlh</span><span class="o">+</span><span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span>
+                    <span class="k">else</span><span class="p">:</span>
+                            <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">]</span><span class="o">=</span><span class="n">newmlh</span>
+
+            <span class="c1">#       print &#39;MLH FINAL  :::&#39;,mlh[jk]</span>
+                    <span class="c1">#print &#39;Anterior, Final &#39;,mlh[jk-1], mlh[jk]</span>
+    <span class="c1">#print &#39;FINAL&#39;, mlh[jk]</span>
+    <span class="k">return</span> <span class="n">mlh</span><span class="p">[</span><span class="n">jk</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">cloudfilter</span><span class="p">(</span><span class="n">allprf</span><span class="p">,</span><span class="n">tarr</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">datestring</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cloud filter</span>
+<span class="sd">    --------------</span>
+
+<span class="sd">    This function computes the cloud filter equations described in [Teschke (2008),Garcia-Franco (2017), Garcia-Franco et.al. (2018)]</span>
+
+
+
+<span class="sd">    **Parameters**</span>
+
+<span class="sd">    **allprf**: `np.nadarray`</span>
+<span class="sd">        backscattering matrix</span>
+<span class="sd">    **tarr** : `np.array`</span>
+<span class="sd">        Time-array, usually decimal hours.</span>
+<span class="sd">    **z** : `np.array`</span>
+<span class="sd">            Height-array usually length 500, start=10, end=5000, t_step=10 [m]</span>
+<span class="sd">    **datestring** : `string`</span>
+<span class="sd">            String for date, typically %Y%m%d, e.g., 20160305</span>
+
+<span class="sd">    :rtype: datetimearray, flag vector: temps returns all datetimes where cloud or precipitation</span>
+<span class="sd">    has been found, flag vector is a numpy array with the dimensions of tarr where clouds are depicted</span>
+<span class="sd">    as 1 and clear-sky conditions as 0.</span>
+
+
+<span class="sd">    **Statistical filter**</span>
+
+<span class="sd">    .. math:: \beta_\sigma (z,t)=B(z,t)\sigma(t)</span>
+<span class="sd">    .. math:: \mu=\frac{1}{N_zN_t}\sum_z\sum_t\beta_\sigma(z,t)</span>
+<span class="sd">    .. math:: \sum=\frac{1}{N_zN_t-1}\sum_z\sum_t[\beta_\sigma(z,t)-\mu]^2.</span>
+<span class="sd">    .. math:: B_N=\mu+3\sqrt{\sum}</span>
+
+<span class="sd">    * :math:`B(z,t)` Backscattering matrix</span>
+<span class="sd">    * :math:`\sigma(t)` Variance over time $t$.</span>
+<span class="sd">    * :math:`\mu` Global mean of \beta_\sigma(z,t)</span>
+<span class="sd">    * :math:`\sum` Global variance of \beta_\sigma(z,t)</span>
+<span class="sd">    * :math:`z_{max}` Maximum integration level [m]</span>
+<span class="sd">    * :math:`B_N` Threshold for determining cloud or no cloud, function of both global mean and variance.</span>
+
+<span class="sd">    `B_N` defines the threshold value used for determining whether or not a profile at time `t` presents</span>
+<span class="sd">    cloud and precipiation or not. If B(z,t)&gt;B_N then cloud and precipitation are present. Else, clear-sky conditions</span>
+<span class="sd">    are considered.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">thrs</span><span class="o">=</span><span class="mf">1750.0</span>
+    <span class="n">day</span><span class="o">=</span><span class="n">datestring</span>
+    <span class="n">dia</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">day</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span>
+    <span class="n">year</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">day</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">mes</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">day</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+    <span class="n">zi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">z</span><span class="o">==</span><span class="mf">200.</span><span class="p">)</span>
+    <span class="n">zi</span><span class="o">=</span><span class="n">zi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">zmax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">z</span><span class="o">==</span><span class="mf">4000.</span><span class="p">)</span>
+    <span class="n">zmax</span><span class="o">=</span><span class="n">zmax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1">#print zi,zmax</span>
+    <span class="n">a</span><span class="o">=</span><span class="n">allprf</span><span class="p">[</span><span class="n">zi</span><span class="p">:</span><span class="n">zmax</span><span class="p">,:]</span>
+    <span class="n">nbs</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">tmps</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">sigma_t</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sigma</span><span class="p">(</span><span class="n">tarr</span><span class="p">)</span>
+    <span class="n">count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">tarr</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">zi</span><span class="p">:</span><span class="n">zmax</span><span class="p">])</span>
+    <span class="n">sumi</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tarr</span><span class="p">):</span>
+
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span><span class="n">z1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">zi</span><span class="p">:</span><span class="n">zmax</span><span class="p">]):</span>
+                    <span class="k">try</span><span class="p">:</span>
+                            <span class="n">sumi</span><span class="o">=</span><span class="n">sumi</span><span class="o">+</span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="n">zi</span><span class="p">,</span><span class="n">i</span><span class="p">]</span>
+                    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+    <span class="c1">#                       print fl</span>
+                            <span class="k">continue</span>
+    <span class="n">mu</span><span class="o">=</span><span class="n">sumi</span><span class="o">/</span><span class="n">count</span>
+    <span class="n">deviat</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tarr</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span><span class="n">z1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">zi</span><span class="p">:</span><span class="n">zmax</span><span class="p">]):</span>
+                    <span class="k">try</span><span class="p">:</span>
+
+                            <span class="n">deviat</span><span class="o">=</span><span class="n">deviat</span><span class="o">+</span><span class="p">((</span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="n">zi</span><span class="p">,</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">mu</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                            <span class="k">continue</span>
+
+    <span class="n">sigma</span><span class="o">=</span><span class="n">deviat</span><span class="o">/</span><span class="p">(</span><span class="n">count</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ec</span><span class="o">=</span><span class="n">mu</span><span class="o">+</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sigma</span><span class="p">))</span>
+<span class="c1">#   print &#39;media&#39;,&#39;sigma&#39;,&#39;3&#39;,&#39;s&#39;</span>
+<span class="c1">#   print mu,sigma,three,two</span>
+    <span class="c1">#if ec &gt; 1400:</span>
+    <span class="c1">#       print fl, ec</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tarr</span><span class="p">):</span>
+            <span class="n">cloud</span><span class="o">=</span><span class="bp">False</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span><span class="n">z1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">zi</span><span class="p">:</span><span class="n">zmax</span><span class="p">]):</span>
+                    <span class="k">try</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="n">zi</span><span class="p">,</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;</span><span class="n">ec</span> <span class="ow">or</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="n">zi</span><span class="p">,</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;</span><span class="n">thrs</span><span class="p">:</span>
+                                    <span class="n">horas</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+                                    <span class="n">minutos</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">t</span><span class="o">-</span><span class="n">horas</span><span class="p">)</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+                                    <span class="n">tim</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">mes</span><span class="p">,</span><span class="n">dia</span><span class="p">,</span><span class="n">horas</span><span class="p">,</span><span class="n">minutos</span><span class="p">)</span>
+                                    <span class="n">tmps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tim</span><span class="p">)</span>
+                                    <span class="c1">#nbs.append(1)</span>
+                                    <span class="n">cloud</span><span class="o">=</span><span class="bp">True</span>
+                                    <span class="k">break</span>
+                    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                            <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">cloud</span><span class="p">:</span>
+                    <span class="n">nbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                    <span class="n">nbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1">#   print tmps</span>
+<span class="c1">#   print nbs</span>
+    <span class="k">return</span> <span class="n">tmps</span><span class="p">,</span><span class="n">nbs</span>
+</pre></div>
+</div>
+<p>##LECTURA ESTANDAR DE PERFILES DE RETRODISPERSION</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">readprofile</span><span class="p">(</span><span class="n">fl</span><span class="p">,</span><span class="n">tim</span><span class="p">):</span>
+    <span class="n">fle</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">fl</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+            <span class="n">fle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="n">filename</span><span class="o">=</span><span class="n">fl</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1">#Check if filename is in UT-5 months.</span>
+    <span class="n">allprf</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">fl</span><span class="p">,</span><span class="n">skip_header</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:],</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">tarr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:],</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">fle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">tarr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">tarr</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">i</span><span class="p">,</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tarr</span><span class="o">==</span><span class="n">tim</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+    <span class="k">try</span><span class="p">:</span>
+            <span class="n">perfil</span><span class="o">=</span><span class="n">allprf</span><span class="p">[:,</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">return</span>
+    <span class="c1">#print perfil</span>
+    <span class="c1">#print perfil</span>
+    <span class="c1">#print len(perfil)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">allprf</span><span class="p">)</span> <span class="o">==</span> <span class="mi">250</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">501</span><span class="p">,</span><span class="mi">2</span><span class="p">):</span>
+                    <span class="c1">#print i</span>
+                    <span class="n">perfil</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">perfil</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+    <span class="c1">#print perfil</span>
+    <span class="k">try</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="n">perfil</span>
+    <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+</pre></div>
+</div>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/ceilotools.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">ceilotools.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/ceilotools.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">ceilotools.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Garcia-Franco J. L..
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

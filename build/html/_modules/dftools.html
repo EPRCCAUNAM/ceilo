@@ -1,0 +1,911 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dftools &mdash; Boundary Layer Ceilometer Retrieval 1.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Boundary Layer Ceilometer Retrieval 1.0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../master.html" class="icon icon-home"> Boundary Layer Ceilometer Retrieval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../processing.html">1. Raw-file processing (.DAT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../secondary.html">2. Algorithms for MLH Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.html">3. Ceilo toolbox (Auxiliary functions)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dftools.html">4. Data Frame toolbox (Auxiliary functions)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gallery.html">Gallery of Examples</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../master.html">Boundary Layer Ceilometer Retrieval</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../master.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>dftools</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dftools</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Data-Frame tools module</span>
+<span class="sd">*********************************</span>
+
+<span class="sd">.. toctree::</span>
+<span class="sd">    :maxdepth: 2</span>
+
+<span class="sd">    ut_5tout_6</span>
+
+<span class="sd">This is the main toolbox designed to aid main processsing the Mixed-layer height data frames through the use of</span>
+<span class="sd">the Python Module `Pandas &lt;https://pandas.pydata.org/&gt;`_.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># -*- coding: utf8 -*-</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">ceilotools</span> <span class="k">import</span> <span class="o">*</span>
+<span class="c1">#from growth_rates import *</span>
+<span class="c1">#filename=&#39;/home/jorge/Documentos/Python/Tesis/Results/201607_10min_db.csv&#39;</span>
+<span class="c1">#output=&#39;/home/jorge/Documentos/Python/Tesis/Results/Plots/&#39;</span>
+<span class="c1">#df=pd.read_csv(filename,index_col=&#39;Fecha y hora&#39;)</span>
+<span class="c1">#df.index=df.index.rename(&#39;Fecha y hora&#39;)</span>
+<span class="c1">#df.index=pd.to_datetime(df.index)</span>
+<span class="c1">#df=df[df &gt; 100]</span>
+<span class="c1">#Function to reset index of data frame, changing from UT-5 to UT-6 the dates needed.</span>
+<div class="viewcode-block" id="ut_5tout_6"><a class="viewcode-back" href="../dftools.html#dftools.ut_5tout_6">[docs]</a><span class="k">def</span> <span class="nf">ut_5tout_6</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Convert times in UTC-5 to UTC-6 and make database time-homogeneus.</span>
+
+<span class="sd">    **Parameters**</span>
+
+<span class="sd">    **df**: `pandas.dataframe`</span>
+<span class="sd">        Pandas Data-Frame object containing a datetime index and columns of MLH.</span>
+
+<span class="sd">    :rtype: `df` pandas dataframe</span>
+
+<span class="sd">    *See Also*</span>
+
+<span class="sd">    :ref:`mlhtodf`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Index values</span>
+    <span class="n">indice</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">dt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="o">==</span><span class="mi">4</span> <span class="ow">and</span> <span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="o">&lt;=</span><span class="mi">6</span><span class="p">)):</span>
+                    <span class="n">indice</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">dt</span><span class="o">-</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">indice</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+<span class="k">def</span> <span class="nf">hourly</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">show</span><span class="p">,</span><span class="n">save</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">wstd</span><span class="p">):</span>
+	<span class="n">yerror</span><span class="o">=</span><span class="kc">None</span>
+	<span class="n">hourly</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+	<span class="n">tvec</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">25</span><span class="p">)</span>
+	<span class="n">hourly</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">hourly</span><span class="p">)</span>
+	<span class="n">bsicplot</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Desviación estándar horaria&#39;</span><span class="p">,</span><span class="n">hourly</span><span class="p">,</span><span class="n">tvec</span><span class="p">,</span><span class="n">show</span><span class="p">,</span><span class="n">save</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">wstd</span><span class="p">,</span><span class="n">yerror</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">corrplot</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span><span class="n">carpeta</span><span class="p">):</span>
+	<span class="n">df</span><span class="o">=</span><span class="n">dx</span><span class="p">[</span><span class="s1">&#39;C2&#39;</span><span class="p">]</span>
+	<span class="n">odf</span><span class="o">=</span><span class="n">dx</span><span class="p">[</span><span class="s1">&#39;Delice&#39;</span><span class="p">]</span>
+	<span class="n">minavg</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">minute</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+	<span class="n">total</span><span class="o">=</span><span class="n">odf</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">odf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">odf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">minute</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+	<span class="n">minavg</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">minavg</span><span class="p">)</span>
+	<span class="n">filtered</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
+	<span class="n">r</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">minavg</span><span class="p">,</span><span class="n">filtered</span><span class="p">)</span>
+	<span class="n">r0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="mi">4</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">minavg</span><span class="p">,</span><span class="n">filtered</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Raw MH [m]&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Filtered MH [m]&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Mean MH daily evolution comparison&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="c1">#	plt.xlim([500,2500])</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span><span class="mi">3000</span><span class="p">,</span><span class="sa">r</span><span class="s1">&#39;$r= &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">r0</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;$&#39;</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">$n= &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">minavg</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;$&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">carpeta</span><span class="o">+</span><span class="s1">&#39;scatcomparison_2.eps&#39;</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="viewcode-block" id="minutes"><a class="viewcode-back" href="../dftools.html#dftools.minutes">[docs]</a><span class="k">def</span> <span class="nf">minutes</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">odf</span><span class="p">,</span><span class="n">show</span><span class="p">,</span><span class="n">rmean</span><span class="p">,</span><span class="n">save</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">wstd</span><span class="p">,</span><span class="n">c</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Plot mean diurnal evolution of MLH</span>
+
+<span class="sd">    **Parameters**</span>
+
+<span class="sd">    **df**: `pandas.dataframe`</span>
+<span class="sd">        Pandas Data-Frame object containing a datetime index and columns of MLH.</span>
+<span class="sd">    **odf**: `pandas.dataframe`</span>
+<span class="sd">        Second Pandas Data-Frame object containing a datetime index and columns of MLH if anomaly is to be plotted.</span>
+<span class="sd">    **show**: `Boolean`</span>
+<span class="sd">        True or False if you wish the plot to be shown.</span>
+<span class="sd">    **rmean**: `Boolean`</span>
+<span class="sd">        True or False if you wish to see the plot smoothed by our own function of runnin mean :ref:`runningMeanFast`.</span>
+<span class="sd">    **save**:`Boolean`</span>
+<span class="sd">        True or False if you wish to save the plot.</span>
+<span class="sd">    **name**:`str`</span>
+<span class="sd">        String of saved plot</span>
+<span class="sd">    **wstd**:`Boolean`</span>
+<span class="sd">        True or False if intention is to plot standard deviaiton and not mean.</span>
+<span class="sd">    **c**:`string`</span>
+<span class="sd">        Color string: choose from `colors &lt;https://matplotlib.org/examples/color/named_colors.html&gt;`_</span>
+
+<span class="sd">    :rtype: `df` pandas dataframe</span>
+
+<span class="sd">    *See Also*</span>
+
+<span class="sd">    :ref:`bsicplot`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+	<span class="c1">#print minavg</span>
+    <span class="k">if</span> <span class="n">wstd</span><span class="p">:</span>
+    	<span class="n">minavg</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">minute</span><span class="p">])</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+    	<span class="n">title</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;Desviación estándar&#39;</span>
+    	<span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\sigma$ (m)&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+    	<span class="n">minavg</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">minute</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    	<span class="n">total</span><span class="o">=</span><span class="n">odf</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">odf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">odf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">minute</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    	<span class="n">anomal</span><span class="o">=</span><span class="n">minavg</span><span class="o">-</span><span class="n">total</span>
+    	<span class="c1">#minavg=minavg-total</span>
+    	<span class="c1">#title=u&#39;Term diurnal evolution (anomaly)&#39;</span>
+    	<span class="n">title</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;MH mean diurnal evolution&#39;</span>
+    	<span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;MH (m)&#39;</span>
+    <span class="n">minarray</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">minavg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rmean</span><span class="p">:</span>
+    	<span class="n">minarray</span><span class="o">=</span><span class="n">runningMeanFast</span><span class="p">(</span><span class="n">minarray</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">tvec</span><span class="o">=</span><span class="n">frange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="nb">float</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">/</span><span class="mf">60.0</span><span class="p">)</span>
+    <span class="n">bsicplot</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">minarray</span><span class="p">,</span><span class="n">tvec</span><span class="p">,</span><span class="n">show</span><span class="p">,</span><span class="n">save</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">ylabel</span><span class="p">,</span><span class="n">c</span><span class="p">)</span></div>
+<div class="viewcode-block" id="bsicplot"><a class="viewcode-back" href="../dftools.html#dftools.bsicplot">[docs]</a><span class="k">def</span> <span class="nf">bsicplot</span><span class="p">(</span><span class="n">titles</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">tvec</span><span class="p">,</span><span class="n">show</span><span class="p">,</span><span class="n">save</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">ylabel</span><span class="p">,</span><span class="n">c</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Basic plot function for a 24-hr plot</span>
+
+<span class="sd">    **Parameters**</span>
+
+<span class="sd">    **titles**: `string`</span>
+<span class="sd">        String for title of plot</span>
+<span class="sd">    **y**: `np.array`</span>
+<span class="sd">        Array to plot</span>
+<span class="sd">    **tvec**:`np.array`</span>
+<span class="sd">        Time-vector.</span>
+<span class="sd">    **show**: `Boolean`</span>
+<span class="sd">        True or False if you wish the plot to be shown.</span>
+<span class="sd">    **rmean**: `Boolean`</span>
+<span class="sd">        True or False if you wish to see the plot smoothed by our own function of runnin mean :ref:`runningMeanFast`.</span>
+<span class="sd">    **save**:`Boolean`</span>
+<span class="sd">        True or False if you wish to save the plot.</span>
+<span class="sd">    **name**:`str`</span>
+<span class="sd">        String of saved plot</span>
+<span class="sd">    **ylabel**:`string`</span>
+<span class="sd">        Label of y-axis.</span>
+<span class="sd">    **c**:`string`</span>
+<span class="sd">        Color string: choose from `colors &lt;https://matplotlib.org/examples/color/named_colors.html&gt;`_</span>
+
+<span class="sd">    :rtype: `df` pandas dataframe</span>
+
+<span class="sd">    *See Also*</span>
+
+<span class="sd">    :ref:`minutes`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tvec</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">titles</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Time (UTC-6)&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">24</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
+    	<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+    	<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    	<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+<span class="k">def</span> <span class="nf">bimonthly</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">out</span><span class="p">):</span>
+	<span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+	<span class="c1">#print i</span>
+	<span class="n">tvec</span><span class="o">=</span><span class="n">frange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="nb">float</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">/</span><span class="mf">60.0</span><span class="p">)</span>
+	<span class="n">j</span><span class="o">=</span><span class="mi">1</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+	<span class="n">c</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">]</span>
+	<span class="k">while</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">12</span><span class="p">:</span>
+
+		<span class="k">if</span> <span class="n">j</span><span class="o">==</span><span class="mi">100</span><span class="p">:</span>
+			<span class="n">ij</span><span class="o">=</span><span class="mi">12</span>
+			<span class="n">mn</span><span class="o">=</span><span class="mi">2</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">ij</span><span class="o">=</span><span class="n">j</span><span class="o">+</span><span class="mi">2</span>
+			<span class="n">mn</span><span class="o">=</span><span class="mi">2</span>
+		<span class="n">newdf</span><span class="o">=</span><span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">month</span><span class="o">==</span><span class="n">j</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">month</span><span class="o">==</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+		<span class="n">j</span><span class="o">+=</span><span class="n">mn</span>
+		<span class="n">total</span><span class="o">=</span><span class="n">newdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">newdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">newdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">minute</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+		<span class="n">argu</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">minute</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+	<span class="c1">#for date in newdf.index:</span>
+	<span class="c1">#	print date</span>
+		<span class="n">total</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
+		<span class="n">dif</span><span class="o">=</span><span class="n">total</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">argu</span><span class="p">)</span>
+
+		<span class="n">dif</span><span class="o">=</span><span class="n">runningMeanFast</span><span class="p">(</span><span class="n">dif</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tvec</span><span class="p">,</span><span class="n">dif</span><span class="p">)</span>
+		<span class="c1">#minutes(newdf,df,False,True,False,&#39;bimestral.png&#39;,False,&#39;-&#39;)</span>
+		<span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+	<span class="n">tot</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">minute</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+	<span class="n">difi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tot</span><span class="p">)</span>
+	<span class="c1">#dif=np.diff(difi)</span>
+	<span class="c1">#plt.plot(tvec,difi,&#39;--&#39;)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+	<span class="c1">#minutes(df,df,False,True,False,&#39;b&#39;,False,&#39;-&#39;)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">24</span><span class="p">])</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (UT-6)&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;MLH anomaly (m)&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+	<span class="c1">#minutes(df,df,False,True,False,&#39;bimestral.png&#39;,False,&#39;--&#39;)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="c1">#	legend=plt.legend([&#39;Jan-Feb&#39;,&#39;Mar-Apr&#39;,&#39;May-Jun&#39;,&#39;Jul-Aug&#39;,&#39;Sep-Oct&#39;,&#39;Nov-Dec&#39;],loc=&#39;upper left&#39;,title=&#39;Term&#39;,fontsize=13)</span>
+	<span class="n">legend</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;JF&#39;</span><span class="p">,</span><span class="s1">&#39;MA&#39;</span><span class="p">,</span><span class="s1">&#39;MJ&#39;</span><span class="p">,</span><span class="s1">&#39;JA&#39;</span><span class="p">,</span><span class="s1">&#39;OS&#39;</span><span class="p">,</span><span class="s1">&#39;ND&#39;</span><span class="p">,</span><span class="s1">&#39;Annual mean&#39;</span><span class="p">],</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="c1">#	legend.get_title().set_fontsize(&#39;14&#39;)</span>
+	<span class="c1">#plt.grid()</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+	<span class="c1">#bimestre=df.groupby([df.index.hour,df.index.minute,df.index.month])</span>
+	<span class="c1">#print	bimestre.get_group((0,0,1:2))</span>
+<span class="k">def</span> <span class="nf">longmaxmin</span><span class="p">(</span><span class="n">meses</span><span class="p">,</span> <span class="n">maximo</span><span class="p">):</span>
+	<span class="n">counter</span><span class="o">=</span><span class="mi">0</span>
+	<span class="n">cdate</span><span class="o">=</span><span class="n">meses</span><span class="p">[</span><span class="n">counter</span><span class="p">]</span>
+	<span class="n">startyear</span><span class="o">=</span><span class="mi">2011</span>
+	<span class="n">mesesits</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Ene&#39;</span><span class="p">,</span><span class="s1">&#39;Feb&#39;</span><span class="p">,</span><span class="s1">&#39;Mar&#39;</span><span class="p">,</span><span class="s1">&#39;Apr&#39;</span><span class="p">,</span><span class="s1">&#39;May&#39;</span><span class="p">,</span><span class="s1">&#39;Jun&#39;</span><span class="p">,</span><span class="s1">&#39;Jul&#39;</span><span class="p">,</span><span class="s1">&#39;Ago&#39;</span><span class="p">,</span><span class="s1">&#39;Sep&#39;</span><span class="p">,</span><span class="s1">&#39;Oct&#39;</span><span class="p">,</span><span class="s1">&#39;Nov&#39;</span><span class="p">,</span><span class="s1">&#39;Dic&#39;</span><span class="p">]</span>
+	<span class="k">while</span> <span class="n">startyear</span><span class="o">!=</span><span class="mi">2017</span><span class="p">:</span>
+		<span class="n">lista</span><span class="o">=</span><span class="p">[]</span>
+		<span class="k">while</span> <span class="n">cdate</span><span class="o">.</span><span class="n">year</span><span class="o">==</span><span class="n">startyear</span><span class="p">:</span>
+			<span class="n">lista</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">maximo</span><span class="p">[</span><span class="n">counter</span><span class="p">])</span>
+			<span class="n">counter</span><span class="o">+=</span><span class="mi">1</span>
+			<span class="n">cdate</span><span class="o">=</span><span class="n">meses</span><span class="p">[</span><span class="n">counter</span><span class="p">]</span>
+			<span class="k">if</span> <span class="n">cdate</span> <span class="o">==</span> <span class="n">meses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+				<span class="k">break</span>
+
+		<span class="n">lista</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lista</span><span class="p">)</span>
+		<span class="n">valmin</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">lista</span><span class="p">)</span>
+		<span class="n">value</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">lista</span><span class="p">)</span>
+		<span class="n">index</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lista</span><span class="o">==</span><span class="n">value</span><span class="p">)</span>
+		<span class="n">indicit</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lista</span><span class="o">==</span><span class="n">valmin</span><span class="p">)</span>
+		<span class="n">startyear</span><span class="o">+=</span><span class="mi">1</span>
+<span class="k">def</span> <span class="nf">yearly</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">filtered</span><span class="p">,</span><span class="n">output</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
+	<span class="n">yr1</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+	<span class="n">yrly</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+<span class="c1">#	print yrly</span>
+	<span class="n">columns</span><span class="o">=</span><span class="n">yrly</span><span class="o">.</span><span class="n">columns</span>
+	<span class="n">tvec</span><span class="o">=</span><span class="n">frange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mf">10.0</span><span class="o">/</span><span class="mf">60.0</span><span class="p">)</span>
+	<span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">2008</span><span class="p">,</span><span class="mi">2016</span><span class="p">)</span>
+	<span class="n">figu</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+	<span class="n">ax</span><span class="o">=</span> <span class="n">figu</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">filtered</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">j</span><span class="o">==</span><span class="mi">2008</span> <span class="ow">or</span> <span class="n">j</span><span class="o">==</span><span class="mi">2010</span><span class="p">:</span><span class="c1"># or j==2012 or j==2009:</span>
+				<span class="k">continue</span>
+		<span class="n">y</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">yrly</span><span class="p">[</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+		<span class="n">y</span><span class="o">=</span><span class="n">runningMeanFast</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tvec</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+
+	<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+	<span class="n">ax</span><span class="o">=</span><span class="n">customax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="s1">&#39;Promedios anuales cada 10 minutos&#39;</span><span class="p">,</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">output</span><span class="o">+</span><span class="n">name</span><span class="o">+</span><span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+	<span class="c1">#plt.show()</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">customax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">titles</span><span class="p">,</span><span class="n">legendloc</span><span class="p">):</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">legendloc</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">titles</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">])</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Horas&#39;</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Altura de capa de mezcla (m)&#39;</span><span class="p">)</span>
+<span class="c1">#minutes(df,True,True,True,output+&#39;10minavg_rmean_filtered.png&#39;,False)</span>
+<span class="c1">#yearly(df,True)</span>
+<span class="c1">#bimonthly(df)</span>
+<span class="k">def</span> <span class="nf">pullclouds</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">cloudfile</span><span class="p">):</span>
+	<span class="n">cloudf</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cloudfile</span><span class="p">)</span>
+	<span class="n">indx</span><span class="o">=</span><span class="n">cloudf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+	<span class="n">dfsnubs</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+	<span class="n">cloudate</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">cloudf</span><span class="p">[</span><span class="n">indx</span><span class="p">])</span>
+	<span class="n">cloudate</span><span class="o">=</span><span class="n">cloudate</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cloudate</span><span class="p">):</span>
+
+		<span class="n">dfsnubs</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+	<span class="k">return</span> <span class="n">dfsnubs</span>
+<span class="k">def</span> <span class="nf">cleanday</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+	<span class="n">start</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2008</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+	<span class="n">end</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2008</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+	<span class="n">final</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+	<span class="n">newdates</span><span class="o">=</span><span class="p">[]</span>
+	<span class="n">index</span><span class="o">=</span><span class="mi">0</span>
+	<span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+	<span class="n">horas</span><span class="o">=</span><span class="p">[]</span>
+	<span class="n">maxi</span><span class="o">=</span><span class="p">[]</span>
+	<span class="n">mini</span><span class="o">=</span><span class="p">[]</span>
+	<span class="n">imin</span><span class="o">=</span><span class="p">[]</span>
+	<span class="n">imax</span><span class="o">=</span><span class="p">[]</span>
+	<span class="c1">#print type(df.index)</span>
+	<span class="k">while</span> <span class="n">start</span> <span class="o">!=</span> <span class="n">final</span><span class="p">:</span>
+		<span class="n">startd</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+		<span class="n">endd</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+		<span class="n">newdf</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">startd</span><span class="p">:</span><span class="n">endd</span><span class="p">]</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">newdf</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="mi">6</span><span class="p">):</span>
+			<span class="n">newdates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newdf</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+			<span class="n">nwdf</span><span class="o">=</span><span class="n">newdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">newdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+			<span class="n">maxi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nwdf</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+			<span class="n">mini</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nwdf</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+			<span class="n">imax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nwdf</span><span class="o">.</span><span class="n">idxmax</span><span class="p">())</span>
+			<span class="n">imin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nwdf</span><span class="o">.</span><span class="n">idxmin</span><span class="p">())</span>
+		<span class="n">index</span><span class="o">+=</span><span class="nb">len</span><span class="p">(</span><span class="n">newdf</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+		<span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+		<span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+	<span class="c1">#df=df.groupby([df.index.hour,df.ixndex.month,df.index.year]).mean()</span>
+	<span class="c1">#df=df.groupby([df.index.day,df.index.month,df.index.year]).max().unstack()</span>
+	<span class="c1">#print df</span>
+	<span class="n">newdates</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">newdates</span><span class="p">)</span>
+	<span class="n">maxis</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">maxi</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">newdates</span><span class="p">,</span><span class="n">maxis</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">minimum</span><span class="p">(</span><span class="n">mlh</span><span class="p">,</span><span class="n">dat</span><span class="p">):</span>
+	<span class="c1">#First check</span>
+	<span class="n">fc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">mlh</span><span class="p">)</span>
+	<span class="c1">#Second check</span>
+	<span class="n">sc</span><span class="o">=</span><span class="n">mlh</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">mlh</span><span class="p">))]</span>
+	<span class="k">if</span> <span class="n">fc</span> <span class="o">==</span> <span class="n">sc</span><span class="p">:</span>
+		<span class="c1">#print &#39;first try&#39;</span>
+		<span class="k">return</span> <span class="n">sc</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">st</span><span class="o">=</span><span class="p">[]</span>
+		<span class="n">diff</span><span class="o">=</span><span class="mi">0</span>
+		<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mlh</span><span class="p">)</span><span class="o">-</span><span class="mi">3</span><span class="p">):</span>
+			<span class="n">dife</span><span class="o">=</span><span class="n">mlh</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span><span class="o">-</span><span class="n">mlh</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+			<span class="k">if</span> <span class="n">dife</span> <span class="o">&gt;</span> <span class="n">diff</span><span class="p">:</span>
+				<span class="n">diff</span><span class="o">=</span><span class="n">dife</span>
+				<span class="n">savej</span><span class="o">=</span><span class="n">j</span>
+		<span class="k">if</span> <span class="n">mlh</span><span class="p">[</span><span class="n">savej</span><span class="p">]</span><span class="o">==</span><span class="n">fc</span> <span class="ow">or</span> <span class="n">mlh</span><span class="p">[</span><span class="n">savej</span><span class="p">]</span><span class="o">==</span><span class="n">sc</span><span class="p">:</span>
+		<span class="c1">#	print &#39;second try&#39;</span>
+			<span class="k">return</span> <span class="n">mlh</span><span class="p">[</span><span class="n">savej</span><span class="p">]</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">dif2</span><span class="o">=</span><span class="mi">0</span>
+			<span class="n">dif4</span><span class="o">=</span><span class="mi">0</span>
+			<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mlh</span><span class="p">)</span><span class="o">-</span><span class="mi">4</span><span class="p">):</span>
+				<span class="n">df4</span><span class="o">=</span><span class="n">mlh</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span><span class="o">-</span><span class="n">mlh</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+				<span class="n">df2</span><span class="o">=</span><span class="n">mlh</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">mlh</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+				<span class="k">if</span> <span class="n">df2</span> <span class="o">&gt;</span> <span class="n">dif2</span> <span class="ow">and</span> <span class="n">df4</span> <span class="o">&gt;</span><span class="n">dif4</span><span class="p">:</span>
+					<span class="n">dif4</span><span class="o">=</span><span class="n">df4</span>
+					<span class="n">dif2</span><span class="o">=</span><span class="n">df2</span>
+					<span class="n">fj</span><span class="o">=</span><span class="n">j</span>
+			<span class="k">if</span> <span class="n">mlh</span><span class="p">[</span><span class="n">fj</span><span class="p">]</span><span class="o">==</span><span class="n">fc</span> <span class="ow">or</span> <span class="n">mlh</span><span class="p">[</span><span class="n">fj</span><span class="p">]</span><span class="o">==</span><span class="n">sc</span> <span class="ow">or</span> <span class="n">fj</span> <span class="o">==</span> <span class="n">savej</span><span class="p">:</span>
+		<span class="c1">#		print &#39;3rd try&#39;</span>
+				<span class="k">return</span> <span class="n">mlh</span><span class="p">[</span><span class="n">fj</span><span class="p">]</span>
+			<span class="k">else</span><span class="p">:</span>
+		<span class="c1">#		print &#39;missing&#39;</span>
+		<span class="c1">#		print savej,fj,np.argmin(mlh),np.argmax(np.diff(mlh))</span>
+				<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">savej</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">mlh</span><span class="p">)))</span> <span class="o">&lt;=</span><span class="mi">3</span><span class="p">:</span>
+					<span class="n">nj</span><span class="o">=</span><span class="nb">int</span><span class="p">((</span><span class="n">savej</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">mlh</span><span class="p">)))</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
+					<span class="k">return</span> <span class="n">mlh</span><span class="p">[</span><span class="n">nj</span><span class="p">]</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">avgn</span><span class="o">=</span><span class="nb">int</span><span class="p">((</span><span class="n">savej</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">mlh</span><span class="p">))</span><span class="o">+</span><span class="n">fj</span><span class="p">)</span><span class="o">/</span><span class="mf">3.</span><span class="p">)</span>
+					<span class="k">return</span> <span class="n">mlh</span><span class="p">[</span><span class="n">avgn</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">growth</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span><span class="n">mlh</span><span class="p">):</span>
+	<span class="n">mlh</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mlh</span><span class="p">)</span>
+	<span class="n">fmlh</span><span class="o">=</span><span class="n">mlh</span>
+	<span class="n">imin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">mlh</span><span class="p">)</span>
+	<span class="n">imax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">mlh</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">imin</span> <span class="o">&lt;</span> <span class="n">imax</span><span class="p">:</span>
+
+		<span class="n">dates</span><span class="o">=</span><span class="n">dates</span><span class="p">[</span><span class="n">imin</span><span class="p">:</span><span class="n">imax</span><span class="p">]</span>
+		<span class="n">mlh</span><span class="o">=</span><span class="n">mlh</span><span class="p">[</span><span class="n">imin</span><span class="p">:</span><span class="n">imax</span><span class="p">]</span>
+	<span class="n">date0</span><span class="o">=</span><span class="n">dates</span>
+	<span class="n">xdate</span><span class="o">=</span><span class="p">[]</span>
+	<span class="k">for</span> <span class="n">dt</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">:</span>
+		<span class="n">m</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">minute</span>
+		<span class="n">h</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">hour</span>
+		<span class="n">add</span><span class="o">=</span><span class="n">m</span><span class="o">/</span><span class="mf">60.</span>
+		<span class="n">xdate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="o">+</span><span class="n">add</span><span class="p">)</span>
+	<span class="c1">#print np.polyfit(xdate,mlh,1)</span>
+	<span class="n">r0</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">xdate</span><span class="p">,</span> <span class="n">mlh</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+	<span class="n">r2</span><span class="o">=</span> <span class="n">r0</span><span class="o">**</span><span class="mf">2.</span>
+	<span class="n">date0</span><span class="o">=</span><span class="n">xdate</span>
+	<span class="n">stindex</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">mlh</span><span class="p">)</span>
+	<span class="n">r</span><span class="o">=</span><span class="n">r0</span>
+	<span class="n">x</span><span class="o">=</span><span class="kc">True</span>
+	<span class="k">while</span> <span class="n">x</span><span class="p">:</span>
+		<span class="n">back</span><span class="o">=</span><span class="n">mlh</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">front</span><span class="o">=</span><span class="n">mlh</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+		<span class="n">bdt</span><span class="o">=</span><span class="n">xdate</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">fdt</span><span class="o">=</span><span class="n">xdate</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+		<span class="n">backr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">bdt</span><span class="p">,</span><span class="n">back</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">fr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">fdt</span><span class="p">,</span><span class="n">front</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">if</span> <span class="n">backr</span> <span class="o">&gt;</span> <span class="n">r</span> <span class="ow">and</span> <span class="n">backr</span><span class="o">&gt;</span> <span class="n">fr</span><span class="p">:</span>
+			<span class="n">xdate</span><span class="o">=</span><span class="n">xdate</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+			<span class="n">mlh</span><span class="o">=</span><span class="n">mlh</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">elif</span> <span class="n">fr</span> <span class="o">&gt;</span> <span class="n">r</span> <span class="ow">and</span> <span class="n">fr</span> <span class="o">&gt;</span> <span class="n">backr</span><span class="p">:</span>
+			<span class="n">xdate</span><span class="o">=</span><span class="n">xdate</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+			<span class="n">mlh</span><span class="o">=</span><span class="n">mlh</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">x</span><span class="o">=</span><span class="kc">False</span>
+		<span class="n">r</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">xdate</span><span class="p">,</span><span class="n">mlh</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mlh</span><span class="p">)</span><span class="o">&lt;=</span><span class="mi">20</span><span class="p">:</span>
+			<span class="n">x</span><span class="o">=</span><span class="kc">False</span>
+<span class="c1">#		print &#39;entering while&#39;</span>
+		<span class="n">r0</span><span class="o">=</span><span class="n">r</span>
+<span class="c1">#	print r</span>
+	<span class="n">maxindex</span><span class="o">=</span><span class="n">stindex</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">mlh</span><span class="p">)</span>
+	<span class="n">m</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">xdate</span><span class="p">,</span><span class="n">mlh</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+	<span class="n">xdate</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xdate</span><span class="p">)</span>
+	<span class="n">nmlh</span><span class="o">=</span><span class="n">xdate</span><span class="o">*</span><span class="n">m</span><span class="o">+</span><span class="n">b</span>
+	<span class="c1">#plt.figure(2)</span>
+	<span class="c1">#plt.plot(date0,fmlh,label=&#39;original&#39;)</span>
+	<span class="c1">#plt.plot(xdate,nmlh,label=&#39;model&#39;)</span>
+	<span class="c1">#plt.legend()</span>
+	<span class="c1">#plt.grid()</span>
+	<span class="c1">#plt.show()</span>
+	<span class="c1">#plt.close()</span>
+	<span class="k">return</span> <span class="n">m</span><span class="p">,</span><span class="n">maxindex</span>
+
+<span class="k">def</span> <span class="nf">grwthrate</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span><span class="n">mlh</span><span class="p">):</span>
+	<span class="n">onemax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">mlh</span><span class="p">))</span>
+	<span class="n">nmlh</span><span class="o">=</span><span class="p">[]</span>
+	<span class="n">nmlh2</span><span class="o">=</span><span class="p">[]</span>
+	<span class="n">dat</span><span class="o">=</span><span class="p">[]</span>
+	<span class="n">dat2</span><span class="o">=</span><span class="p">[]</span>
+	<span class="n">meses</span><span class="o">=</span><span class="p">[]</span>
+	<span class="c1">#plt.figure(2)</span>
+	<span class="c1">#plt.plot(dates,mlh)</span>
+	<span class="c1">#plt.show()</span>
+	<span class="n">mesesito</span><span class="o">=</span><span class="n">dates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">month</span>
+	<span class="n">meses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mesesito</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">dt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dates</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">dt</span><span class="o">.</span><span class="n">hour</span> <span class="o">&gt;</span> <span class="mf">6.0</span> <span class="ow">and</span> <span class="n">dt</span><span class="o">.</span><span class="n">hour</span> <span class="o">&lt;</span> <span class="mf">15.0</span><span class="p">:</span>
+<span class="c1">#			print dt.minute</span>
+			<span class="n">nmlh</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mlh</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+			<span class="n">dat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+			<span class="k">if</span> <span class="n">dt</span><span class="o">.</span><span class="n">hour</span> <span class="o">&lt;</span> <span class="mf">11.5</span><span class="p">:</span>
+				<span class="n">nmlh2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mlh</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+				<span class="n">dat2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+	<span class="n">dindex</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mlh</span><span class="o">==</span><span class="n">nmlh</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+	<span class="n">indice</span><span class="o">=</span><span class="n">minimum</span><span class="p">(</span><span class="n">nmlh2</span><span class="p">,</span><span class="n">dat2</span><span class="p">)</span>
+	<span class="n">indice</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">nmlh</span><span class="o">==</span><span class="n">indice</span><span class="p">)</span>
+
+	<span class="n">indice</span><span class="o">=</span><span class="n">indice</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+	<span class="c1">#print dat2[indice],nmlh2[indice]</span>
+
+	<span class="n">nlmh</span><span class="o">=</span><span class="n">nmlh</span><span class="p">[</span><span class="n">indice</span><span class="p">:]</span>
+<span class="c1">#	print nlmh</span>
+	<span class="n">dat</span><span class="o">=</span><span class="n">dat</span><span class="p">[</span><span class="n">indice</span><span class="p">:]</span>
+	<span class="n">m</span><span class="p">,</span><span class="n">maxindex</span><span class="o">=</span><span class="n">growth</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span><span class="n">nlmh</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">m</span><span class="p">,</span><span class="n">dindex</span><span class="o">+</span><span class="n">indice</span><span class="p">,</span><span class="n">maxindex</span>
+<span class="k">def</span> <span class="nf">mlhmax</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">axarr</span><span class="p">,</span><span class="n">lab</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="c1">#print df.tail</span>
+    <span class="c1">#dx=df.truncate(after=&#39;2016-05-30 00:00:00&#39;,before=&#39;2011-01-01 00:00:00&#39;)</span>
+    <span class="c1">#dx=df[(df.index.month&lt;6)or(df.index.year&lt;2017)]</span>
+    <span class="c1">#	print dx.head, dx.tail</span>
+    <span class="n">dx</span><span class="o">=</span><span class="n">df</span>
+    <span class="n">xy</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">xyz</span><span class="o">=</span><span class="n">xy</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+    <span class="n">lista</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">df</span>
+    <span class="n">mes</span><span class="o">=</span><span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">year</span><span class="o">=</span><span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">day</span><span class="o">=</span><span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">list2</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">maxday</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">minday</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">listmin</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">dates</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">maxi</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">dates</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">mini</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">meses</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">!=</span><span class="n">day</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">list2</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">2</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                	<span class="n">maxday</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">list2</span><span class="p">))</span>
+                <span class="k">except</span><span class="p">:</span>
+                	<span class="k">pass</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">listmin</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">2</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">minday</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">listmin</span><span class="p">))</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Vacio&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">!=</span> <span class="n">mes</span><span class="p">:</span>
+    		<span class="c1">#print j</span>
+                    <span class="n">maxi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">maxday</span><span class="p">))</span>
+                    <span class="n">mini</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">minday</span><span class="p">))</span>
+                    <span class="n">maxday</span><span class="o">=</span><span class="p">[]</span>
+                    <span class="n">minday</span><span class="o">=</span><span class="p">[]</span>
+                    <span class="n">m</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
+
+                    <span class="n">meses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+                    <span class="n">mes</span><span class="o">=</span><span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">listmin</span><span class="o">=</span><span class="p">[]</span>
+                    <span class="n">list2</span><span class="o">=</span><span class="p">[]</span>
+                    <span class="n">dates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span><span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]))</span>
+                    <span class="n">day</span><span class="o">=</span><span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">&gt;</span><span class="mi">11</span> <span class="ow">and</span> <span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">19</span><span class="p">:</span>
+        	<span class="n">list2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xy</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;</span><span class="mi">10</span> <span class="ow">and</span> <span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">2</span><span class="p">:</span>
+        	<span class="n">listmin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xy</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="mi">2016</span> <span class="ow">and</span> <span class="n">xy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="mi">5</span><span class="p">:</span>
+        	<span class="k">break</span>
+
+    <span class="n">maxi</span><span class="o">=</span><span class="n">runningMeanFast</span><span class="p">(</span><span class="n">maxi</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+    <span class="c1">#	maxi=runningMeanFast(maxi,3)</span>
+    <span class="n">mini</span><span class="o">=</span><span class="n">runningMeanFast</span><span class="p">(</span><span class="n">mini</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+    <span class="c1">#	mini=runningMeanFast(mini,3)</span>
+    <span class="n">monthly</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">minute</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">meanly</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">month</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">meanly</span><span class="o">=</span><span class="n">dx</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">dx</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">dx</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">month</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="c1">#	print meanly</span>
+    <span class="n">meanly</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">meanly</span><span class="p">)</span>
+    <span class="c1">#	meanly=runningMeanFast(meanly,4)</span>
+    <span class="n">meanly</span><span class="o">=</span><span class="n">runningMeanFast</span><span class="p">(</span><span class="n">meanly</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">ano</span><span class="o">=</span><span class="n">monthly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">mes</span><span class="o">=</span><span class="n">monthly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">fdatey</span><span class="o">=</span><span class="mi">2017</span>
+    <span class="n">fdatem</span><span class="o">=</span><span class="mi">5</span>
+    <span class="n">j</span><span class="o">=</span><span class="mi">0</span>
+    <span class="c1">#	print ano, mes</span>
+    <span class="c1">#print meses, maxi</span>
+    <span class="c1">#longmaxmin(meses,maxi)</span>
+    <span class="n">m</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">dt</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">while</span> <span class="ow">not</span><span class="p">(</span><span class="n">ano</span> <span class="o">==</span> <span class="n">fdatey</span> <span class="ow">and</span> <span class="n">mes</span> <span class="o">&gt;=</span> <span class="n">fdatem</span><span class="p">):</span>
+
+    	<span class="n">date</span><span class="o">=</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">monthly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="n">monthly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span><span class="mi">1</span><span class="p">,</span><span class="n">monthly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span><span class="n">monthly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">3</span><span class="p">])]</span>
+    	<span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">monthly</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">monthly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">j</span><span class="p">]])</span>
+    	<span class="k">while</span> <span class="n">mes</span>  <span class="o">==</span> <span class="n">monthly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]:</span>
+    		<span class="n">mes</span><span class="o">=</span><span class="n">monthly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    		<span class="n">date</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">monthly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="n">monthly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span><span class="mi">1</span><span class="p">,</span><span class="n">monthly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span><span class="n">monthly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">3</span><span class="p">]))</span>
+    		<span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">monthly</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">monthly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">j</span><span class="p">]])</span>
+    		<span class="n">j</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="c1">#	x=yy</span>
+    <span class="c1">#		print x</span>
+    	<span class="n">m1</span><span class="p">,</span><span class="n">minimo</span><span class="p">,</span><span class="n">maxis</span><span class="o">=</span><span class="n">grwthrate</span><span class="p">(</span><span class="n">date</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+    <span class="c1">#		print m1</span>
+    	<span class="n">m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
+    	<span class="n">dt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    	 <span class="c1">#	plt.plot(date,x)</span>
+    	<span class="n">ano</span><span class="o">=</span><span class="n">monthly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    	<span class="n">mes</span><span class="o">=</span><span class="n">monthly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    	<span class="n">j</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="n">dt</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+    <span class="c1">#global m1</span>
+    <span class="c1">#m2=m</span>
+    <span class="n">m1</span><span class="o">=</span><span class="n">runningMeanFast</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">m2</span><span class="o">=</span><span class="n">runningMeanFast</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+    <span class="c1">#longmaxmin(meses,m2)</span>
+    <span class="n">dates</span><span class="p">,</span><span class="n">areas</span><span class="o">=</span><span class="n">blhanomaly</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+    <span class="n">axarr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Time series &#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+
+    <span class="n">axarr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">meses</span><span class="p">,</span><span class="n">maxi</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="n">lab</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="c1">#label = axarr[0].yaxis.get_major_ticks(.label</span>
+    <span class="n">labels</span><span class="o">=</span> <span class="n">axarr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_major_ticks</span><span class="p">()</span><span class="c1">#.set_fontsize(16)</span>
+    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
+    	<span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="o">.</span><span class="n">label</span>
+    	<span class="n">label</span><span class="o">.</span><span class="n">set_fontsize</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+    <span class="c1">#	axarr[0].set_yticklabels(size=16)</span>
+    <span class="n">axarr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;MH max [m]&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">19</span><span class="p">)</span>
+    <span class="n">axarr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="c1">#	plt.show()</span>
+    <span class="c1">#axarr[0].set_title(r&#39;MLH$_{max}$ time series&#39;,fontsize=16)</span>
+    <span class="c1">#	axarr[1].set_ylabel(r&#39;MH min (m)&#39;,fontsize=20)</span>
+    <span class="c1">#	axarr[1].plot(meses,mini,c,label=lab,linewidth=1.5)</span>
+    <span class="c1">#label = axarr[0].yaxis.get_major_ticks(.label</span>
+    <span class="c1">#	labels= axarr[1].yaxis.get_major_ticks()#.set_fontsize(16)</span>
+    <span class="c1">#	for label in labels:</span>
+    <span class="c1">#		label=label.label</span>
+    <span class="c1">#		label.set_fontsize(16)</span>
+    <span class="c1">#	axarr[0].set_yticklabels(size=16)</span>
+    <span class="n">axarr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span><span class="n">m2</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="n">lab</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">axarr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Growth rate (m/h)&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">labels</span><span class="o">=</span> <span class="n">axarr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_major_ticks</span><span class="p">()</span><span class="c1">#.set_fontsize(16)</span>
+    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
+    	<span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="o">.</span><span class="n">label</span>
+    	<span class="n">label</span><span class="o">.</span><span class="n">set_fontsize</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">axarr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="c1">#	axarr[2].plot(meses,meanly,c,label=lab,linewidth=1.5)</span>
+    <span class="c1">#	axarr[2].set_ylabel(r&#39;MH mean [m]&#39;,fontsize=20)</span>
+    <span class="c1">#	axarr[2].grid()</span>
+    <span class="c1">#	labels= axarr[2].yaxis.get_major_ticks()#.set_fontsize(16)</span>
+    <span class="c1">#	for label in labels:</span>
+    <span class="c1">#		label=label.label</span>
+    <span class="c1">#		label.set_fontsize(16)</span>
+    <span class="c1">#	axarr[2].grid()</span>
+    <span class="n">axarr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span><span class="n">areas</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="n">lab</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">axarr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Anomaly Area (-)&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">axarr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="n">labels</span><span class="o">=</span> <span class="n">axarr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_major_ticks</span><span class="p">()</span><span class="c1">#.set_fontsize(16)</span>
+    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
+    	<span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="o">.</span><span class="n">label</span>
+    	<span class="n">label</span><span class="o">.</span><span class="n">set_fontsize</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">axarr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+    <span class="c1">#axarr[1].set_title(r&#39;MLH$_{min}$ series&#39;,fontsize	axarr[1].set_ylabel(r&#39;MLH$_{min}$ (m)&#39;,fontsize=14)</span>
+    <span class="c1">#bsicplot(u&#39;Serie de tiempo de $MLH_{max}$&#39;,maxi,meses,False,False,name,&#39;Altura de capa de mezcla&#39;)</span>
+    <span class="c1">#plt.plot(dates,maxi)</span>
+    <span class="c1">#plt.plot(dates,mini)</span>
+    <span class="c1">#plt.show()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span><span class="c1">#</span>
+
+    <span class="c1">#xy.plot()</span>
+<span class="k">def</span> <span class="nf">blhanomaly</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
+    <span class="n">prom</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">start</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2008</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;2011&#39;</span><span class="p">:]</span>
+    <span class="n">total</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">minute</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">year</span><span class="o">=</span><span class="mi">2011</span>
+    <span class="n">mes</span><span class="o">=</span><span class="mi">1</span>
+    <span class="n">tvec</span><span class="o">=</span><span class="n">frange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mf">10.0</span><span class="o">/</span><span class="mf">60.0</span><span class="p">)</span>
+    <span class="n">areas</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">dates</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">year</span><span class="o">==</span><span class="mi">2017</span> <span class="ow">and</span> <span class="n">mes</span> <span class="o">==</span> <span class="mi">5</span><span class="p">):</span>
+        <span class="n">newdf</span><span class="o">=</span><span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">month</span><span class="o">==</span><span class="n">mes</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span><span class="o">==</span><span class="n">year</span><span class="p">)]</span>
+        <span class="c1">#print mes, year</span>
+        <span class="c1">#print len(newdf)</span>
+        <span class="n">media</span><span class="o">=</span><span class="n">newdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">newdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">newdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">minute</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">anomal</span><span class="o">=</span><span class="n">media</span><span class="o">-</span><span class="n">total</span>
+        <span class="n">anomal</span><span class="o">=</span><span class="n">anomal</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+        <span class="c1">#print np.array(anomal)</span>
+        <span class="c1">#print np.trapz(np.array(anomal),dx=10.0/60.0)</span>
+        <span class="n">areas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">anomal</span><span class="p">,</span><span class="n">dx</span><span class="o">=</span><span class="mf">10.0</span><span class="o">/</span><span class="mf">60.0</span><span class="p">))</span>
+        <span class="n">dates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">mes</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">mes</span><span class="o">+=</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">mes</span><span class="o">&gt;</span><span class="mi">12</span><span class="p">:</span>
+        	<span class="n">year</span><span class="o">+=</span><span class="mi">1</span>
+        	<span class="n">mes</span><span class="o">=</span><span class="mi">1</span>
+    <span class="n">bd</span><span class="o">=</span><span class="n">runningMeanFast</span><span class="p">(</span><span class="n">areas</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">bd</span><span class="o">=</span><span class="n">runningMeanFast</span><span class="p">(</span><span class="n">bd</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+    <span class="c1">#print areas</span>
+    <span class="k">return</span> <span class="n">dates</span><span class="p">,</span><span class="n">bd</span>
+	<span class="c1">#plt.plot(dates,bd)</span>
+	<span class="c1">#plt.grid()</span>
+	<span class="c1">#bd.plot()</span>
+<span class="c1"># 	#plt.show()</span>
+<span class="c1"># 	x=yy</span>
+<span class="c1"># 	df[(df.index.month==j)|(df.index.month==j+1)]</span>
+<span class="c1"># 	mes=df.index[0].month</span>
+<span class="c1"># 	fechas=[df.index[0]]</span>
+<span class="c1"># 	for date in df.index:</span>
+<span class="c1"># 		if date.month != mes:</span>
+<span class="c1"># 			fechas.append(date)</span>
+<span class="c1"># 			mes=date.month</span>
+<span class="c1"># 	bd=np.array(bd)</span>
+<span class="c1"># #	for i,b in enumerate(bd):</span>
+<span class="c1"># 		#bd[i]=bd[i]-prom</span>
+<span class="c1"># 	bd=runningMeanFast(bd,3)</span>
+<span class="c1"># #	bd=runningMeanFast(bd,3)</span>
+<span class="c1"># 	print len(fechas), len(bd)</span>
+<span class="c1"># 	plt.plot(bd,&#39;k&#39;)</span>
+<span class="c1"># #	plt.xlabel(&#39;Year&#39;,fontsize=13)</span>
+<span class="c1"># #	plt.title(&#39;Time series&#39;)</span>
+<span class="c1"># #	plt.ylabel(&#39;Mean MLH&#39;)</span>
+<span class="c1"># 	plt.grid()</span>
+<span class="c1"># #	plt.show()</span>
+<span class="c1"># #	plt.savefig(name)</span>
+<span class="c1"># #	x=yy</span>
+<span class="c1"># 	plt.xticks(np.arange(0,12),[&#39;Jan&#39;,&#39;Feb&#39;,&#39;Mar&#39;,&#39;Apr&#39;,&#39;May&#39;,&#39;Jun&#39;,&#39;Jul&#39;,&#39;Aug&#39;,&#39;Sep&#39;,&#39;Oct&#39;,&#39;Nov&#39;,&#39;Dic&#39;])</span>
+<span class="c1"># 	plt.xlim([0,11])</span>
+<span class="c1"># 	plt.xlabel(&#39;Month&#39;)</span>
+<span class="c1"># 	plt.ylabel(&#39;MLH  (m)&#39;)</span>
+<span class="c1"># 	plt.title(&#39;Time Series Anomaly&#39;)</span>
+<span class="c1"># #	plt.grid()</span>
+<span class="c1"># #	plt.show()</span>
+<span class="c1"># 	plt.savefig(name)</span>
+
+<span class="k">def</span> <span class="nf">monthtable</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+	<span class="n">total</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">month</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+	<span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
+	<span class="n">df</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Enero&#39;</span><span class="p">,</span><span class="s1">&#39;Febrero&#39;</span><span class="p">,</span><span class="s1">&#39;Marzo&#39;</span><span class="p">,</span><span class="s1">&#39;Abril&#39;</span><span class="p">,</span><span class="s1">&#39;Mayo&#39;</span><span class="p">,</span><span class="s1">&#39;Junio&#39;</span><span class="p">,</span><span class="s1">&#39;Julio&#39;</span><span class="p">,</span><span class="s1">&#39;Agosto&#39;</span><span class="p">,</span><span class="s1">&#39;Septiembre&#39;</span><span class="p">,</span><span class="s1">&#39;Octubre&#39;</span><span class="p">,</span><span class="s1">&#39;Noviembre&#39;</span><span class="p">,</span><span class="s1">&#39;Diciembre&#39;</span><span class="p">]</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Hora/Mes&#39;</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;tablamensual.txt&#39;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Garcia-Franco J. L..
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
