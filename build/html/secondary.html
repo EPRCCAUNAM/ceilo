@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2. Algorithms for MLH Retrieval &mdash; Boundary Layer Ceilometer Retrieval 1.0.1 documentation</title>
+  <title>1. Algorithms for MLH Retrieval &mdash; Boundary Layer Ceilometer Retrieval 1.0.1 documentation</title>
   
 
   
@@ -17,44 +17,38 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Boundary Layer Ceilometer Retrieval 1.0.1 documentation" href="index.html"/>
-        <link rel="next" title="3. Ceilo toolbox (Auxiliary functions)" href="tools.html"/>
-        <link rel="prev" title="1. Raw-file processing (.DAT)" href="processing.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Ceilo toolbox (Auxiliary functions)" href="tools.html" />
+    <link rel="prev" title="Raw-file processing (.DAT)" href="processing.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -94,19 +88,19 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="processing.html">1. Raw-file processing (.DAT)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Algorithms for MLH Retrieval</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#idealized-point-function-method">2.1. Idealized point function method</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#wavelet-covariant-transform-algorithm">2.2. Wavelet Covariant Transform Algorithm</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#description">2.2.1. Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">Raw-file processing (.DAT)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Algorithms for MLH Retrieval</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#idealized-point-function-method">1.1. Idealized point function method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wavelet-covariant-transform-algorithm">1.2. Wavelet Covariant Transform Algorithm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#description">1.2.1. Description</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#linking-pages">2.3. Linking Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linking-pages">1.3. Linking Pages</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tools.html">3. Ceilo toolbox (Auxiliary functions)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dftools.html">4. Data Frame toolbox (Auxiliary functions)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gallery.html">Gallery of Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Ceilo toolbox (Auxiliary functions)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dftools.html">2. Data Frame toolbox (Auxiliary functions)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gallery.html">3. Gallery of Examples</a></li>
 </ul>
 
             
@@ -118,7 +112,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="master.html">Boundary Layer Ceilometer Retrieval</a>
@@ -126,9 +120,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -151,7 +146,7 @@
     
       <li><a href="master.html">Docs</a> &raquo;</li>
         
-      <li>2. Algorithms for MLH Retrieval</li>
+      <li>1. Algorithms for MLH Retrieval</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -171,25 +166,25 @@
            <div itemprop="articleBody">
             
   <div class="section" id="algorithms-for-mlh-retrieval">
-<h1>2. Algorithms for MLH Retrieval<a class="headerlink" href="#algorithms-for-mlh-retrieval" title="Permalink to this headline">¶</a></h1>
+<h1>1. Algorithms for MLH Retrieval<a class="headerlink" href="#algorithms-for-mlh-retrieval" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound" id="secondarytoc">
 </div>
 <span class="target" id="module-ipf"></span><div class="section" id="idealized-point-function-method">
-<h2>2.1. Idealized point function method<a class="headerlink" href="#idealized-point-function-method" title="Permalink to this headline">¶</a></h2>
+<h2>1.1. Idealized point function method<a class="headerlink" href="#idealized-point-function-method" title="Permalink to this headline">¶</a></h2>
 <p>&#64;author: Burgos Andrea,
 Translated to Python by JLGF.</p>
 <p>This function obtains the residual layer height from an idealized profile.
 The method is thoroughly described in [Steyn (1999), Wang et. al. (2016)] but basically obtains boundary layer parameters by
 fitting an idealized backscatter profile to the observed profile, where the Residual Layer Height (RLH) is determined by the profile that reduces
 the error between the idealized and the observed profiles through a minimum.</p>
-<p>The idealized profile  <span class="math">\(B(r)\)</span> is given by:</p>
-<div class="math">
+<p>The idealized profile  <span class="math notranslate nohighlight">\(B(r)\)</span> is given by:</p>
+<div class="math notranslate nohighlight">
 \[B(r)=\frac{B_m+B_\mu}{2} - \frac{B_m-B_\mu}{2} erf \bigg(\frac{r-r_m}{s}\bigg) .\]</div>
 <ul class="simple">
-<li><span class="math">\(B_m\)</span> Mean mixed layer backscatter.</li>
-<li><span class="math">\(B_\mu\)</span> mean backscatter in the air inmediately above the mixed layer depth.</li>
-<li><span class="math">\(r_m\)</span> Mixed layer depth.</li>
-<li><span class="math">\(erf\)</span> <a class="reference external" href="https://en.wikipedia.org/wiki/Error_function">Error function</a>.</li>
+<li><span class="math notranslate nohighlight">\(B_m\)</span> Mean mixed layer backscatter.</li>
+<li><span class="math notranslate nohighlight">\(B_\mu\)</span> mean backscatter in the air inmediately above the mixed layer depth.</li>
+<li><span class="math notranslate nohighlight">\(r_m\)</span> Mixed layer depth.</li>
+<li><span class="math notranslate nohighlight">\(erf\)</span> <a class="reference external" href="https://en.wikipedia.org/wiki/Error_function">Error function</a>.</li>
 </ul>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -200,12 +195,12 @@ the error between the idealized and the observed profiles through a minimum.</p>
 <dd>float: Residual Layer Height (m)</dd>
 </dl>
 <p>A way you might use me is</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">residual_h</span><span class="o">=</span><span class="n">ipf</span><span class="p">(</span><span class="n">backscattering</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">residual_h</span><span class="o">=</span><span class="n">ipf</span><span class="p">(</span><span class="n">backscattering</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This returns the residual layer height to be used by the algorithm.</p>
 <p>It is important to note that this function makes use of the scipy function erf, so scipy must be installed:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">erf</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">erf</span>
 </pre></div>
 </div>
 <dl class="function">
@@ -220,11 +215,11 @@ the error between the idealized and the observed profiles through a minimum.</p>
 
 </div>
 <span class="target" id="module-wavelets"></span><div class="section" id="wavelet-covariant-transform-algorithm">
-<h2>2.2. Wavelet Covariant Transform Algorithm<a class="headerlink" href="#wavelet-covariant-transform-algorithm" title="Permalink to this headline">¶</a></h2>
+<h2>1.2. Wavelet Covariant Transform Algorithm<a class="headerlink" href="#wavelet-covariant-transform-algorithm" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 </div>
 <div class="section" id="description">
-<h3>2.2.1. Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
+<h3>1.2.1. Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
 <p>This toolbox contains functions used in the retrieval of the mixed-layer height following a wavelet covariant transform algorithm, from
 <a class="reference internal" href="#brooks2003" id="id1">[Bro03]</a>. Roughly, this method compares the local match or similarity between the Haar wavelet function and the backscattering profile.
 This could be interpreted as pattern search for a sudden jump. In fact, this same procedure is used to analyze electric signals and
@@ -234,10 +229,10 @@ find electric jumps.</p>
 <li><dl class="first docutils">
 <dt>The four functions are.</dt>
 <dd><ol class="first last arabic">
-<li>Main covariance transform. <a class="reference internal" href="#wavelets.haarcovtransfm" title="wavelets.haarcovtransfm"><code class="xref py py-meth docutils literal"><span class="pre">wavelets.haarcovtransfm()</span></code></a>.</li>
-<li>Find boundary-layer top. <a class="reference internal" href="#wavelets.findtops" title="wavelets.findtops"><code class="xref py py-meth docutils literal"><span class="pre">wavelets.findtops()</span></code></a>.</li>
-<li>Haar function. <a class="reference internal" href="#wavelets.haarval" title="wavelets.haarval"><code class="xref py py-meth docutils literal"><span class="pre">wavelets.haarval()</span></code></a>.</li>
-<li>Iterative inner-function <a class="reference internal" href="#wavelets.firstmlh" title="wavelets.firstmlh"><code class="xref py py-meth docutils literal"><span class="pre">wavelets.firstmlh()</span></code></a>.</li>
+<li>Main covariance transform. <a class="reference internal" href="#wavelets.haarcovtransfm" title="wavelets.haarcovtransfm"><code class="xref py py-meth docutils literal notranslate"><span class="pre">wavelets.haarcovtransfm()</span></code></a>.</li>
+<li>Find boundary-layer top. <a class="reference internal" href="#wavelets.findtops" title="wavelets.findtops"><code class="xref py py-meth docutils literal notranslate"><span class="pre">wavelets.findtops()</span></code></a>.</li>
+<li>Haar function. <a class="reference internal" href="#wavelets.haarval" title="wavelets.haarval"><code class="xref py py-meth docutils literal notranslate"><span class="pre">wavelets.haarval()</span></code></a>.</li>
+<li>Iterative inner-function <a class="reference internal" href="#wavelets.firstmlh" title="wavelets.firstmlh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">wavelets.firstmlh()</span></code></a>.</li>
 </ol>
 </dd>
 </dl>
@@ -270,20 +265,20 @@ find electric jumps.</p>
 </tbody>
 </table>
 <p>Formula adopted from <a class="reference internal" href="#brooks2003" id="id2">[Bro03]</a>, Grabon2010]_.</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[W_f(a,b)=\frac{1}{a}\int_{z_0}^{z_{max}}B(z)H\bigg(\frac{(z-b)}{a}\bigg)).\]</div>
 <ul>
-<li><p class="first"><span class="math">\(W_f\)</span> Wavelet transform</p>
+<li><p class="first"><span class="math notranslate nohighlight">\(W_f\)</span> Wavelet transform</p>
 </li>
-<li><p class="first"><span class="math">\(a\)</span> Dilation value, in [m]</p>
+<li><p class="first"><span class="math notranslate nohighlight">\(a\)</span> Dilation value, in [m]</p>
 </li>
-<li><p class="first"><span class="math">\(b\)</span> Wavelet translation, in [m]</p>
+<li><p class="first"><span class="math notranslate nohighlight">\(b\)</span> Wavelet translation, in [m]</p>
 </li>
-<li><p class="first"><span class="math">\(z_0\)</span> Minimum integration level [m]</p>
+<li><p class="first"><span class="math notranslate nohighlight">\(z_0\)</span> Minimum integration level [m]</p>
 </li>
-<li><p class="first"><span class="math">\(z_{max}\)</span> Maximum integration level [m]</p>
+<li><p class="first"><span class="math notranslate nohighlight">\(z_{max}\)</span> Maximum integration level [m]</p>
 </li>
-<li><p class="first"><span class="math">\(B(z)\)</span> Backscaterring matrix</p>
+<li><p class="first"><span class="math notranslate nohighlight">\(B(z)\)</span> Backscaterring matrix</p>
 <blockquote>
 <div><p>Returns MLH, BLmin, BLmax</p>
 </div></blockquote>
@@ -313,7 +308,7 @@ find electric jumps.</p>
 </tbody>
 </table>
 <p><strong>Haar Wavelet</strong></p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}h\bigg(\frac{z-b}{a}\bigg) = \begin{cases}       + 1 &amp; b-\frac{a}{2}\leq z\leq 0 \\         -1 &amp; b \leq z \leq b+\frac{a}{2} \\         0 &amp; otherwise                 \end{cases}\end{split}\]</div>
 <p>findtops, haarcovtransfm</p>
 </dd></dl>
@@ -348,9 +343,9 @@ Similarly, b varies from the bottom value to the top value in increments of 10 [
 <dt>The height of the bottom of the entrainment layer <cite>E_L</cite>, and the height top of the entrainment layer <cite>E_U</cite></dt>
 <dd>are given by:</dd>
 </dl>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[E_L=\frac{2}{5}W_f(a_0,b)\]</div>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[E_U=\frac{3}{5}W_f(a_0,b)\]</div>
 <p>findtops, haarcovtransfm</p>
 </dd></dl>
@@ -379,7 +374,7 @@ Similarly, b varies from the bottom value to the top value in increments of 10 [
 </table>
 <p>The mixed-layer height under ref{brooks2003,Grabon2010} is given by the maximum of the wavelet covariance transfrom
 for a dilation <cite>a</cite> in a translation <cite>b</cite>, i.e.:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[MLH=max(W_f(a,b))\]</div>
 <p>This script provides the first or only estimate of the MLH depending on how the script is run. If the recursive method is used then this
 MLH will change as the dilation changes, however, if the recursive method is not used then this MLH is exactly the maximum of
@@ -389,7 +384,7 @@ MLH will change as the dilation changes, however, if the recursive method is not
 </dd></dl>
 
 <div class="section" id="linking-pages">
-<span id="id5"></span><h2>2.3. Linking Pages<a class="headerlink" href="#linking-pages" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2>1.3. Linking Pages<a class="headerlink" href="#linking-pages" title="Permalink to this headline">¶</a></h2>
 <p id="bibtex-bibliography-secondary-0"><table class="docutils citation" frame="void" id="brooks2003" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
@@ -414,18 +409,16 @@ MLH will change as the dilation changes, however, if the recursive method is not
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="tools.html" class="btn btn-neutral float-right" title="3. Ceilo toolbox (Auxiliary functions)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tools.html" class="btn btn-neutral float-right" title="Ceilo toolbox (Auxiliary functions)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="processing.html" class="btn btn-neutral" title="1. Raw-file processing (.DAT)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="processing.html" class="btn btn-neutral float-left" title="Raw-file processing (.DAT)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -434,11 +427,11 @@ MLH will change as the dilation changes, however, if the recursive method is not
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Garcia-Franco J. L..
+        &copy; Copyright 2018, Garcia-Franco J. L.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -451,37 +444,15 @@ MLH will change as the dilation changes, however, if the recursive method is not
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'1.0.1',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

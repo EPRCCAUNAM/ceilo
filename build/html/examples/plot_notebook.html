@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>1. Contour-Plot of backscattering matrix &mdash; Boundary Layer Ceilometer Retrieval 1.0.1 documentation</title>
+  <title>3.1. Contour-Plot of backscattering matrix &mdash; Boundary Layer Ceilometer Retrieval 1.0.1 documentation</title>
   
 
   
@@ -17,45 +17,38 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Boundary Layer Ceilometer Retrieval 1.0.1 documentation" href="../index.html"/>
-        <link rel="up" title="Gallery of Examples" href="../gallery.html"/>
-        <link rel="next" title="Plotting example 1" href="../auto_examples/plot_notebook.html"/>
-        <link rel="prev" title="Gallery of Examples" href="../gallery.html"/> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3.2. Plotting example 1" href="../auto_examples/plot_notebook.html" />
+    <link rel="prev" title="3. Gallery of Examples" href="../gallery.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -95,13 +88,13 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../processing.html">1. Raw-file processing (.DAT)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../secondary.html">2. Algorithms for MLH Retrieval</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tools.html">3. Ceilo toolbox (Auxiliary functions)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dftools.html">4. Data Frame toolbox (Auxiliary functions)</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../gallery.html">Gallery of Examples</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">1. Contour-Plot of backscattering matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_notebook.html">Plotting example 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../processing.html">Raw-file processing (.DAT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../secondary.html">1. Algorithms for MLH Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.html">Ceilo toolbox (Auxiliary functions)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dftools.html">2. Data Frame toolbox (Auxiliary functions)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../gallery.html">3. Gallery of Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.1. Contour-Plot of backscattering matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_notebook.html">3.2. Plotting example 1</a></li>
 </ul>
 </li>
 </ul>
@@ -115,7 +108,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../master.html">Boundary Layer Ceilometer Retrieval</a>
@@ -123,9 +116,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -148,9 +142,9 @@
     
       <li><a href="../master.html">Docs</a> &raquo;</li>
         
-          <li><a href="../gallery.html">Gallery of Examples</a> &raquo;</li>
+          <li><a href="../gallery.html">3. Gallery of Examples</a> &raquo;</li>
         
-      <li>1. Contour-Plot of backscattering matrix</li>
+      <li>3.1. Contour-Plot of backscattering matrix</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -170,14 +164,14 @@
            <div itemprop="articleBody">
             
   <div class="section" id="contour-plot-of-backscattering-matrix">
-<span id="sphx-glr-auto-examples-plot-notebook-py"></span><h1>1. Contour-Plot of backscattering matrix<a class="headerlink" href="#contour-plot-of-backscattering-matrix" title="Permalink to this headline">¶</a></h1>
+<span id="sphx-glr-auto-examples-plot-notebook-py"></span><h1>3.1. Contour-Plot of backscattering matrix<a class="headerlink" href="#contour-plot-of-backscattering-matrix" title="Permalink to this headline">¶</a></h1>
 <p>The gallery is capable of transforming Python files into reStructuredText files
 with a notebook structure. This will allow us to show how to plot the backscattering matrix and add the MLH as dots.</p>
-<p>This will make use of the functions to read the matrix (<code class="xref py py-meth docutils literal"><span class="pre">readmatrixfile()</span></code>), read the MLH file (<code class="xref py py-meth docutils literal"><span class="pre">readmlh()</span></code>).
-Both functions are part of the <a class="reference internal" href="../secondary.html#module-wavelets" title="wavelets"><code class="xref py py-meth docutils literal"><span class="pre">wavelets()</span></code></a> module.</p>
+<p>This will make use of the functions to read the matrix (<code class="xref py py-meth docutils literal notranslate"><span class="pre">readmatrixfile()</span></code>), read the MLH file (<code class="xref py py-meth docutils literal notranslate"><span class="pre">readmlh()</span></code>).
+Both functions are part of the <a class="reference internal" href="../secondary.html#module-wavelets" title="wavelets"><code class="xref py py-meth docutils literal notranslate"><span class="pre">wavelets()</span></code></a> module.</p>
 <p>As part of this example, the backscattering matrix is plotted through a contour-plot and MLH through scatter plot.
 Firstly, we import numpy, matplotlib and the files.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Code source: JLGF</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Code source: JLGF</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
@@ -189,7 +183,7 @@ Firstly, we import numpy, matplotlib and the files.</p>
 <p>After having established the paths, we read-in both the backscattering matrix and the MLH vectors.
 Before plotting, a standard procedure is to normalize all values to a maximum and minimum pre-determined
 level of backscattering. Usually done because at certain heights, backscattering can become zero.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">z</span><span class="p">,</span><span class="n">time</span><span class="p">,</span><span class="n">allprf</span><span class="o">=</span><span class="n">readmatrixfile</span><span class="p">(</span><span class="n">matrixfile</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">z</span><span class="p">,</span><span class="n">time</span><span class="p">,</span><span class="n">allprf</span><span class="o">=</span><span class="n">readmatrixfile</span><span class="p">(</span><span class="n">matrixfile</span><span class="p">)</span>
 <span class="n">mlhtime</span><span class="p">,</span><span class="n">mlh</span><span class="o">=</span><span class="n">readmlh</span><span class="p">(</span><span class="n">mlhfile</span><span class="p">)</span>
 <span class="n">levels</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">300</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">allprf</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])):</span>
@@ -214,18 +208,16 @@ level of backscattering. Usually done because at certain heights, backscattering
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../auto_examples/plot_notebook.html" class="btn btn-neutral float-right" title="Plotting example 1" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../auto_examples/plot_notebook.html" class="btn btn-neutral float-right" title="3.2. Plotting example 1" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../gallery.html" class="btn btn-neutral" title="Gallery of Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../gallery.html" class="btn btn-neutral float-left" title="3. Gallery of Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -234,11 +226,11 @@ level of backscattering. Usually done because at certain heights, backscattering
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Garcia-Franco J. L..
+        &copy; Copyright 2018, Garcia-Franco J. L.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -251,37 +243,15 @@ level of backscattering. Usually done because at certain heights, backscattering
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'1.0.1',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

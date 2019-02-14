@@ -17,43 +17,37 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Boundary Layer Ceilometer Retrieval 1.0.1 documentation" href="index.html"/>
-        <link rel="next" title="1. Raw-file processing (.DAT)" href="processing.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Raw-file processing (.DAT)" href="processing.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -93,11 +87,11 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="processing.html">1. Raw-file processing (.DAT)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="secondary.html">2. Algorithms for MLH Retrieval</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tools.html">3. Ceilo toolbox (Auxiliary functions)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dftools.html">4. Data Frame toolbox (Auxiliary functions)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gallery.html">Gallery of Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">Raw-file processing (.DAT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="secondary.html">1. Algorithms for MLH Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Ceilo toolbox (Auxiliary functions)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dftools.html">2. Data Frame toolbox (Auxiliary functions)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gallery.html">3. Gallery of Examples</a></li>
 </ul>
 
             
@@ -109,7 +103,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="#">Boundary Layer Ceilometer Retrieval</a>
@@ -117,9 +111,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -167,7 +162,7 @@
 <p>These pages document the code use to process ceilometer raw data and interpret the backscattering signal to estimate mixed or boundary layer structure.
 This is part of work done by the Spectroscopy and Remote Sensing (EPR) Group at UNAM, Mexico using the Red Universitaria de Observatorios Atmosfericos (RUOA) instruments.</p>
 <p>Since 2008, a suite of commercial lidar systems, the Vaisala CL31 ceilometer, have been measuring backscattering profiles across different urban and remote parts of Mexico.
-This instrument is particularly useful for boundary layer studies due to the <span class="math">\(\sim 10\)</span> [m] vertical resolution and a temporal resolution
+This instrument is particularly useful for boundary layer studies due to the <span class="math notranslate nohighlight">\(\sim 10\)</span> [m] vertical resolution and a temporal resolution
 ranging from 2 to 16 s. Through the analysis of these profiles, <a class="reference internal" href="secondary.html#jlgf2018" id="id1">[GarciaFSB+18]</a> showed the typical diurnal and seasonal variability of the mixed-layer height.</p>
 <a class="reference internal image-reference" href="_images/ceilo.jpg"><img alt="alternate text" class="align-center" src="_images/ceilo.jpg" style="width: 375.0px; height: 285.0px;" /></a>
 <p>Figure 1. Ceilometer Vaisala CL31. This instrument is an optical active remote sensing instrument equipped with an eye-safe laser that interacts with atmospheric aerosols in such a way that
@@ -177,31 +172,27 @@ Find index below.</p>
 <div class="toctree-wrapper compound" id="mastertoc">
 <p class="caption"><span class="caption-text">Contents:</span><a class="headerlink" href="#mastertoc" title="Permalink to this toctree">¶</a></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="processing.html">1. Raw-file processing (.DAT)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="processing.html#main-file-loop-v1606-py">1.1. Main file  loop_v1606.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">Raw-file processing (.DAT)</a><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="secondary.html">2. Algorithms for MLH Retrieval</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="secondary.html#idealized-point-function-method">2.1. Idealized point function method</a></li>
-<li class="toctree-l2"><a class="reference internal" href="secondary.html#wavelet-covariant-transform-algorithm">2.2. Wavelet Covariant Transform Algorithm</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="secondary.html#description">2.2.1. Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="secondary.html">1. Algorithms for MLH Retrieval</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="secondary.html#idealized-point-function-method">1.1. Idealized point function method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="secondary.html#wavelet-covariant-transform-algorithm">1.2. Wavelet Covariant Transform Algorithm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="secondary.html#description">1.2.1. Description</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="secondary.html#linking-pages">2.3. Linking Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="secondary.html#linking-pages">1.3. Linking Pages</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tools.html">3. Ceilo toolbox (Auxiliary functions)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tools.html#ceilo-tools-module">3.1. Ceilo tools module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Ceilo toolbox (Auxiliary functions)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#ceilo-tools-module">Ceilo tools module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="dftools.html">4. Data Frame toolbox (Auxiliary functions)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dftools.html#data-frame-tools-module">4.1. Data-Frame tools module</a><ul class="simple">
+<li class="toctree-l1"><a class="reference internal" href="dftools.html">2. Data Frame toolbox (Auxiliary functions)</a><ul class="simple">
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="gallery.html">Gallery of Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/plot_notebook.html">1. Contour-Plot of backscattering matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gallery.html">3. Gallery of Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/plot_notebook.html">3.1. Contour-Plot of backscattering matrix</a></li>
 </ul>
 </li>
 </ul>
@@ -235,15 +226,13 @@ Find index below.</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="processing.html" class="btn btn-neutral float-right" title="1. Raw-file processing (.DAT)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="processing.html" class="btn btn-neutral float-right" title="Raw-file processing (.DAT)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>
@@ -253,11 +242,11 @@ Find index below.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Garcia-Franco J. L..
+        &copy; Copyright 2018, Garcia-Franco J. L.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -270,37 +259,15 @@ Find index below.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'1.0.1',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

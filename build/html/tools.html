@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>3. Ceilo toolbox (Auxiliary functions) &mdash; Boundary Layer Ceilometer Retrieval 1.0.1 documentation</title>
+  <title>Ceilo toolbox (Auxiliary functions) &mdash; Boundary Layer Ceilometer Retrieval 1.0.1 documentation</title>
   
 
   
@@ -17,44 +17,38 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Boundary Layer Ceilometer Retrieval 1.0.1 documentation" href="index.html"/>
-        <link rel="next" title="4. Data Frame toolbox (Auxiliary functions)" href="dftools.html"/>
-        <link rel="prev" title="2. Algorithms for MLH Retrieval" href="secondary.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2. Data Frame toolbox (Auxiliary functions)" href="dftools.html" />
+    <link rel="prev" title="1. Algorithms for MLH Retrieval" href="secondary.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -94,14 +88,14 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="processing.html">1. Raw-file processing (.DAT)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="secondary.html">2. Algorithms for MLH Retrieval</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Ceilo toolbox (Auxiliary functions)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#ceilo-tools-module">3.1. Ceilo tools module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">Raw-file processing (.DAT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="secondary.html">1. Algorithms for MLH Retrieval</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Ceilo toolbox (Auxiliary functions)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ceilo-tools-module">Ceilo tools module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="dftools.html">4. Data Frame toolbox (Auxiliary functions)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gallery.html">Gallery of Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dftools.html">2. Data Frame toolbox (Auxiliary functions)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gallery.html">3. Gallery of Examples</a></li>
 </ul>
 
             
@@ -113,7 +107,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="master.html">Boundary Layer Ceilometer Retrieval</a>
@@ -121,9 +115,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -146,7 +141,7 @@
     
       <li><a href="master.html">Docs</a> &raquo;</li>
         
-      <li>3. Ceilo toolbox (Auxiliary functions)</li>
+      <li>Ceilo toolbox (Auxiliary functions)</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -166,11 +161,11 @@
            <div itemprop="articleBody">
             
   <div class="section" id="ceilo-toolbox-auxiliary-functions">
-<h1>3. Ceilo toolbox (Auxiliary functions)<a class="headerlink" href="#ceilo-toolbox-auxiliary-functions" title="Permalink to this headline">¶</a></h1>
+<h1>Ceilo toolbox (Auxiliary functions)<a class="headerlink" href="#ceilo-toolbox-auxiliary-functions" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound" id="auxtoc">
 </div>
 <span class="target" id="module-ceilotools"></span><div class="section" id="ceilo-tools-module">
-<h2>3.1. Ceilo tools module<a class="headerlink" href="#ceilo-tools-module" title="Permalink to this headline">¶</a></h2>
+<h2>Ceilo tools module<a class="headerlink" href="#ceilo-tools-module" title="Permalink to this headline">¶</a></h2>
 <p>This is the main toolbox designed to aid main processsing by reading and writing to files and processing data.</p>
 </div>
 <dl class="function">
@@ -221,9 +216,9 @@
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p><strong>See Also functions to estimate and write mlh</strong></p>
-<p class="last"><a class="reference internal" href="#ceilotools.writemlh" title="ceilotools.writemlh"><code class="xref py py-meth docutils literal"><span class="pre">writemlh()</span></code></a>
-<a class="reference internal" href="secondary.html#module-ipf" title="ipf"><code class="xref py py-meth docutils literal"><span class="pre">ipf()</span></code></a>
-<a class="reference internal" href="secondary.html#module-wavelets" title="wavelets"><code class="xref py py-meth docutils literal"><span class="pre">wavelets()</span></code></a></p>
+<p class="last"><a class="reference internal" href="#ceilotools.writemlh" title="ceilotools.writemlh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">writemlh()</span></code></a>
+<a class="reference internal" href="secondary.html#module-ipf" title="ipf"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ipf()</span></code></a>
+<a class="reference internal" href="secondary.html#module-wavelets" title="wavelets"><code class="xref py py-meth docutils literal notranslate"><span class="pre">wavelets()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -309,21 +304,21 @@
 <p>has been found, flag vector is a numpy array with the dimensions of tarr where clouds are depicted
 as 1 and clear-sky conditions as 0.</p>
 <p><strong>Statistical filter</strong></p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\beta_\sigma (z,t)=B(z,t)\sigma(t)\]</div>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\mu=\frac{1}{N_zN_t}\sum_z\sum_t\beta_\sigma(z,t)\]</div>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\sum=\frac{1}{N_zN_t-1}\sum_z\sum_t[\beta_\sigma(z,t)-\mu]^2.\]</div>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[B_N=\mu+3\sqrt{\sum}\]</div>
 <ul class="simple">
-<li><span class="math">\(B(z,t)\)</span> Backscattering matrix</li>
-<li><span class="math">\(\sigma(t)\)</span> Variance over time $t$.</li>
-<li><span class="math">\(\mu\)</span> Global mean of beta_sigma(z,t)</li>
-<li><span class="math">\(\sum\)</span> Global variance of beta_sigma(z,t)</li>
-<li><span class="math">\(z_{max}\)</span> Maximum integration level [m]</li>
-<li><span class="math">\(B_N\)</span> Threshold for determining cloud or no cloud, function of both global mean and variance.</li>
+<li><span class="math notranslate nohighlight">\(B(z,t)\)</span> Backscattering matrix</li>
+<li><span class="math notranslate nohighlight">\(\sigma(t)\)</span> Variance over time $t$.</li>
+<li><span class="math notranslate nohighlight">\(\mu\)</span> Global mean of beta_sigma(z,t)</li>
+<li><span class="math notranslate nohighlight">\(\sum\)</span> Global variance of beta_sigma(z,t)</li>
+<li><span class="math notranslate nohighlight">\(z_{max}\)</span> Maximum integration level [m]</li>
+<li><span class="math notranslate nohighlight">\(B_N\)</span> Threshold for determining cloud or no cloud, function of both global mean and variance.</li>
 </ul>
 <p><cite>B_N</cite> defines the threshold value used for determining whether or not a profile at time <cite>t</cite> presents
 cloud and precipiation or not. If B(z,t)&gt;B_N then cloud and precipitation are present. Else, clear-sky conditions
@@ -385,7 +380,7 @@ are considered.</p>
 </table>
 <p><em>See Also</em></p>
 </div></blockquote>
-<p><a class="reference internal" href="#ceilotools.writematrix" title="ceilotools.writematrix"><code class="xref py py-meth docutils literal"><span class="pre">writematrix()</span></code></a></p>
+<p><a class="reference internal" href="#ceilotools.writematrix" title="ceilotools.writematrix"><code class="xref py py-meth docutils literal notranslate"><span class="pre">writematrix()</span></code></a></p>
 </dd></dl>
 
 <dl class="function">
@@ -406,7 +401,7 @@ are considered.</p>
 </tbody>
 </table>
 <p><em>See Also</em></p>
-<p><a class="reference internal" href="#ceilotools.writemlh" title="ceilotools.writemlh"><code class="xref py py-meth docutils literal"><span class="pre">writemlh()</span></code></a></p>
+<p><a class="reference internal" href="#ceilotools.writemlh" title="ceilotools.writemlh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">writemlh()</span></code></a></p>
 </dd></dl>
 
 <dl class="function">
@@ -420,25 +415,23 @@ are considered.</p>
 </dl>
 <p>:rtype:time-array, mlh-array:  time and MLH vector.</p>
 <p><em>See Also</em></p>
-<p><a class="reference internal" href="#ceilotools.writemlh" title="ceilotools.writemlh"><code class="xref py py-meth docutils literal"><span class="pre">writemlh()</span></code></a> , <a class="reference internal" href="#ceilotools.readmatrixfile" title="ceilotools.readmatrixfile"><code class="xref py py-meth docutils literal"><span class="pre">readmatrixfile()</span></code></a></p>
+<p><a class="reference internal" href="#ceilotools.writemlh" title="ceilotools.writemlh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">writemlh()</span></code></a> , <a class="reference internal" href="#ceilotools.readmatrixfile" title="ceilotools.readmatrixfile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">readmatrixfile()</span></code></a></p>
 </dd></dl>
 
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="dftools.html" class="btn btn-neutral float-right" title="4. Data Frame toolbox (Auxiliary functions)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="dftools.html" class="btn btn-neutral float-right" title="2. Data Frame toolbox (Auxiliary functions)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="secondary.html" class="btn btn-neutral" title="2. Algorithms for MLH Retrieval" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="secondary.html" class="btn btn-neutral float-left" title="1. Algorithms for MLH Retrieval" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -447,11 +440,11 @@ are considered.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Garcia-Franco J. L..
+        &copy; Copyright 2018, Garcia-Franco J. L.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -464,37 +457,15 @@ are considered.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'1.0.1',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>
