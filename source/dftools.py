@@ -22,8 +22,6 @@ import sys
 import datetime
 from ceilotools import *
 #from growth_rates import *
-#filename='/home/jorge/Documentos/Python/Tesis/Results/201607_10min_db.csv'
-#output='/home/jorge/Documentos/Python/Tesis/Results/Plots/'
 #df=pd.read_csv(filename,index_col='Fecha y hora')
 #df.index=df.index.rename('Fecha y hora')
 #df.index=pd.to_datetime(df.index)
@@ -58,7 +56,7 @@ def hourly(df,show,save,name,wstd):
 	hourly=df.groupby(df.index.hour).std()
 	tvec=range(1,25)
 	hourly=np.asarray(hourly)
-	bsicplot(u'Desviación estándar horaria',hourly,tvec,show,save,name,wstd,yerror)
+	bsicplot(u'Desviacion estandar horaria',hourly,tvec,show,save,name,wstd,yerror)
 def corrplot(dx,carpeta):
 	df=dx['C2']
 	odf=dx['Delice']
@@ -111,7 +109,7 @@ def minutes(df,odf,show,rmean,save,name,wstd,c):
 	#print minavg
     if wstd:
     	minavg=df.groupby([df.index.hour,df.index.minute]).std()
-    	title=u'Desviación estándar'
+    	title=u'Desviacion estandar'
     	ylabel=r'$\sigma$ (m)'
     else:
     	minavg=df.groupby([df.index.hour,df.index.minute]).mean()
