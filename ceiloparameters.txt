@@ -1,11 +1,11 @@
 Main directory5
-/home/jlgf/Documents/Python/scripts/
+/home/D1_CEILO/
 Output Directory
-/home/jlgf/Documents/Python/
+/home/D1_CEILO/JQRO/
 Run Version 
 Angel
 Averaging time window (in minutes)
 10
 Estación 
-JQRO
+station_name
 

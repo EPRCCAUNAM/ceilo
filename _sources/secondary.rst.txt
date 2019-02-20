@@ -1,0 +1,27 @@
+.. Secondary file
+
+Algorithms for MLH Retrieval
+===============================================================
+
+.. toctree::
+   :name: secondarytoc
+   :numbered:
+   :maxdepth: 4
+   :caption: Contents:
+      ...
+      wavelets
+      ipf
+.. automodule::  ipf
+.. automodule:: wavelets
+.. autofunction:: haarcovtransfm
+.. autofunction:: haarval
+.. autofunction:: findtops
+.. autofunction:: firstmlh
+
+.. _linking-pages:
+
+=============
+Linking Pages
+=============
+
+.. bibliography:: references.bib

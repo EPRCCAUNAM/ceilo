@@ -17,42 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Boundary Layer Ceilometer Retrieval 1.0.1 documentation" href="../index.html"/> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -90,11 +84,15 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Ceilo tools module</a></li>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../processing.html">Raw-file processing (.DAT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../secondary.html">1. Algorithms for MLH Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.html">Ceilo toolbox (Auxiliary functions)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dftools.html">2. Data Frame toolbox (Auxiliary functions)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gallery.html">3. Gallery of Examples</a></li>
 </ul>
-</div>
+
             
           
         </div>
@@ -104,7 +102,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../master.html">Boundary Layer Ceilometer Retrieval</a>
@@ -112,9 +110,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -156,19 +155,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="ceilo-tools-module">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-ceilotools-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="ceilo-tools-module">
 <span id="sphx-glr-auto-examples-ceilotools-py"></span><h1>Ceilo tools module<a class="headerlink" href="#ceilo-tools-module" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
 <p>This is the main toolbox designed to aid main processsing by reading and writing to files and processing data.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">wavelets</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">histogram</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">N</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">histogram</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">N</span><span class="p">):</span>
     <span class="n">ntot</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">xmax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">xmin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -181,7 +184,7 @@
     <span class="k">return</span> <span class="n">bins</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hist</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">frange</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">stop</span><span class="p">,</span><span class="n">step</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">frange</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">stop</span><span class="p">,</span><span class="n">step</span><span class="p">):</span>
     <span class="n">vec</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">stop</span><span class="o">-</span><span class="n">start</span><span class="p">)</span><span class="o">/</span><span class="n">step</span><span class="p">)</span>
     <span class="n">num</span><span class="o">=</span><span class="n">start</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vec</span><span class="p">):</span>
@@ -190,7 +193,7 @@
     <span class="k">return</span> <span class="n">vec</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">roundt</span><span class="p">(</span><span class="n">minutos</span><span class="p">,</span><span class="n">segundos</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">roundt</span><span class="p">(</span><span class="n">minutos</span><span class="p">,</span><span class="n">segundos</span><span class="p">):</span>
     <span class="n">dif</span><span class="o">=</span><span class="n">minutos</span><span class="o">-</span><span class="mi">10</span>
     <span class="n">count</span><span class="o">=</span><span class="mi">0</span>
     <span class="n">minutseg</span><span class="o">=</span><span class="n">minutos</span><span class="o">+</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">segundos</span><span class="p">)</span><span class="o">/</span><span class="mf">60.0</span><span class="p">)</span>
@@ -204,7 +207,7 @@
     <span class="k">return</span> <span class="n">minutos</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">writemlh</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span><span class="n">horas</span><span class="p">,</span><span class="n">mlhs</span><span class="p">,</span><span class="n">station</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">writemlh</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span><span class="n">horas</span><span class="p">,</span><span class="n">mlhs</span><span class="p">,</span><span class="n">station</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Write of mixed-layer file to txt file, using standard heading. For instance:</span>
@@ -239,7 +242,7 @@
     <span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">writematrix</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span><span class="n">zeta</span><span class="p">,</span><span class="n">hour_vec</span><span class="p">,</span><span class="n">station</span><span class="p">,</span><span class="n">date</span><span class="p">,</span><span class="n">runv</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">writematrix</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span><span class="n">zeta</span><span class="p">,</span><span class="n">hour_vec</span><span class="p">,</span><span class="n">station</span><span class="p">,</span><span class="n">date</span><span class="p">,</span><span class="n">runv</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Write of backscattering matrix to txt file, using standard heading. For instance:</span>
@@ -349,7 +352,7 @@
     <span class="k">return</span> <span class="n">profil</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">profil</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">readmatrixfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">readmatrixfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Write of backscattering matrix to txt file, using standard heading. For instance:</span>
@@ -380,7 +383,7 @@
     <span class="k">return</span> <span class="p">[</span><span class="n">z</span><span class="p">,</span><span class="n">tarr</span><span class="p">,</span><span class="n">allprf</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">insertmatrix</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">insertmatrix</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
     <span class="n">data</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">skip_header</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
     <span class="n">time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">mlh</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
@@ -394,7 +397,7 @@
     <span class="k">return</span> <span class="n">height</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">runningMeanFast</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">runningMeanFast</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Running mean of array x over a window of size N.</span>
@@ -472,7 +475,7 @@
     <span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">writeavgmatrix</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span><span class="n">tvec</span><span class="p">,</span><span class="n">estacion</span><span class="p">,</span><span class="n">matrix</span><span class="p">,</span><span class="n">runv</span><span class="p">,</span><span class="n">averages</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">writeavgmatrix</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span><span class="n">tvec</span><span class="p">,</span><span class="n">estacion</span><span class="p">,</span><span class="n">matrix</span><span class="p">,</span><span class="n">runv</span><span class="p">,</span><span class="n">averages</span><span class="p">):</span>
     <span class="n">fout</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
     <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Matriz de datos diarios a promediar&#39;</span> <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Ceilometro Vaisala CL31 &#39;</span><span class="o">+</span><span class="n">estacion</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -496,7 +499,7 @@
 </pre></div>
 </div>
 <p>Usados en Avgmlh REDONDEANDO.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">insrtmatrxrnd</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">trthval</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">insrtmatrxrnd</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">trthval</span><span class="p">):</span>
     <span class="n">data</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">skip_header</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
     <span class="n">time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">mlh</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
@@ -515,7 +518,7 @@
     <span class="k">return</span> <span class="n">height</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">addtovecrnd</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">tvec</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">addtovecrnd</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">tvec</span><span class="p">):</span>
     <span class="n">data</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">skip_header</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
     <span class="n">time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">mlh</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
@@ -530,7 +533,7 @@
     <span class="k">return</span> <span class="n">tvec</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">myround</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">base</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">myround</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">base</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">base</span> <span class="o">*</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">base</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">ipmthd</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span><span class="n">lowlm</span><span class="p">,</span><span class="n">z</span><span class="p">):</span>
     <span class="n">ipm</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span>
@@ -776,7 +779,7 @@
 </pre></div>
 </div>
 <p>##LECTURA ESTANDAR DE PERFILES DE RETRODISPERSION</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">readprofile</span><span class="p">(</span><span class="n">fl</span><span class="p">,</span><span class="n">tim</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">readprofile</span><span class="p">(</span><span class="n">fl</span><span class="p">,</span><span class="n">tim</span><span class="p">):</span>
     <span class="n">fle</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">fl</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
             <span class="n">fle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
@@ -811,20 +814,18 @@
 </pre></div>
 </div>
 <p><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container">
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-ceilotools-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/ceilotools.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">ceilotools.py</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/49cf037a8070a0b4bc845425741ee15d/ceilotools.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">ceilotools.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/ceilotools.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">ceilotools.ipynb</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/f6244ee5ebccf282da99d7f6c957e71d/ceilotools.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">ceilotools.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -833,11 +834,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Garcia-Franco J. L..
+        &copy; Copyright 2018, Garcia-Franco J. L.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -850,37 +851,15 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'1.0.1',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

@@ -3,8 +3,9 @@ Ceilo tools module
 *********************************
 
 .. toctree::
-   :maxdepth: 2
-   minutes
+	:maxdepth: 2
+
+	minutes
    
 This is the main toolbox designed to aid main processsing by reading and writing to files and processing data.
 

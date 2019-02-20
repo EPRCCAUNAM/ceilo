@@ -58,7 +58,7 @@ def hourly(df,show,save,name,wstd):
 	hourly=df.groupby(df.index.hour).std()
 	tvec=range(1,25)
 	hourly=np.asarray(hourly)
-	bsicplot(u'Desviación estándar horaria',hourly,tvec,show,save,name,wstd,yerror)
+	bsicplot(u'Desviacion estandar horaria',hourly,tvec,show,save,name,wstd,yerror)
 def corrplot(dx,carpeta):
 	df=dx['C2']
 	odf=dx['Delice']
@@ -111,7 +111,7 @@ def minutes(df,odf,show,rmean,save,name,wstd,c):
 	#print minavg
     if wstd:
     	minavg=df.groupby([df.index.hour,df.index.minute]).std()
-    	title=u'Desviación estándar'
+    	title=u'Desviacion estandar'
     	ylabel=r'$\sigma$ (m)'
     else:
     	minavg=df.groupby([df.index.hour,df.index.minute]).mean()

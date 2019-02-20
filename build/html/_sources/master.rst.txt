@@ -37,8 +37,6 @@ Find index below.
    :caption: Contents:
 
 
-
-
    processing
    secondary
    tools
@@ -64,7 +62,7 @@ Authors and Contributions
 --------------------------
 
 | Lead Scientists: *Grutter, M., Bezanilla A., Stremme W., Ruiz-Angulo A.*
-| Main code author: *Garcia-Franco J.L.*
+| Main code authors: *Garcia-Franco J.L.*, *Stremme W.*
 | Original code: *Stremme W.*
 | Contributions from: *Burgos A.*
 

@@ -1,0 +1,15 @@
+.. Auxiliary tools
+
+Data Frame toolbox (Auxiliary functions)
+===============================================================
+
+.. toctree::
+   :name: auxtoc
+   :numbered:
+   :maxdepth: 2
+   :caption: Contents:
+      ...
+      dftools
+      
+.. automodule::  dftools
+.. autofunction:: ut_5tout_6
