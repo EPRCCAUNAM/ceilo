@@ -51,7 +51,7 @@ Find index below.
 Linking Pages
 =============
 
-| `Grupo de Espectroscopia y Percepcion Remota (EPR), Centro de Ciencias de la Atmosfera, UNAM <https://www.atmosfera.unam.mx/ciencias-ambientales/espectroscopia-y-percepcion-remota/>`_.
+| `Grupo de Espectroscopia y Percepcion Remota (EPR), Centro de Ciencias de la Atmosfera, UNAM <https://www.atmosfera.unam.mx/ciencias-ambientales/espectroscopia-y-percepcion-remota/> or <http://www.epr.atmosfera.unam.mx/ceilo/>`_.
 | `Laboratorio de Espectroscopia y Percepcion Remota <https://www.atmosfera.unam.mx/ciencias-ambientales/espectroscopia-y-percepcion-remota/laboratorio-de-espectroscopia/>`_.
 | `Red Universitaria de Observatorios Atmosfericos <http://www.ruoa.unam.mx/>`_.
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>1. Algorithms for MLH Retrieval &mdash; Boundary Layer Ceilometer Retrieval 1.0.1 documentation</title>
+  <title>2. Algorithms for MLH Retrieval &mdash; Boundary Layer Ceilometer Retrieval 1.0.1 documentation</title>
   
 
   
@@ -20,12 +20,21 @@
   <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
   
     
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'./',
+              VERSION:'1.0.1',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -37,8 +46,8 @@
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Ceilo toolbox (Auxiliary functions)" href="tools.html" />
-    <link rel="prev" title="Raw-file processing (.DAT)" href="processing.html" /> 
+    <link rel="next" title="3. Ceilo toolbox (Auxiliary functions)" href="tools.html" />
+    <link rel="prev" title="1. Raw-file processing (.DAT)" href="processing.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -88,19 +97,19 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="processing.html">Raw-file processing (.DAT)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Algorithms for MLH Retrieval</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#idealized-point-function-method">1.1. Idealized point function method</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#wavelet-covariant-transform-algorithm">1.2. Wavelet Covariant Transform Algorithm</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#description">1.2.1. Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">1. Raw-file processing (.DAT)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Algorithms for MLH Retrieval</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#idealized-point-function-method">2.1. Idealized point function method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wavelet-covariant-transform-algorithm">2.2. Wavelet Covariant Transform Algorithm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#description">2.2.1. Description</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#linking-pages">1.3. Linking Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linking-pages">2.3. Linking Pages</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tools.html">Ceilo toolbox (Auxiliary functions)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dftools.html">2. Data Frame toolbox (Auxiliary functions)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gallery.html">3. Gallery of Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">3. Ceilo toolbox (Auxiliary functions)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dftools.html">4. Data Frame toolbox (Auxiliary functions)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gallery.html">5. Gallery of Examples</a></li>
 </ul>
 
             
@@ -146,7 +155,7 @@
     
       <li><a href="master.html">Docs</a> &raquo;</li>
         
-      <li>1. Algorithms for MLH Retrieval</li>
+      <li>2. Algorithms for MLH Retrieval</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -166,11 +175,11 @@
            <div itemprop="articleBody">
             
   <div class="section" id="algorithms-for-mlh-retrieval">
-<h1>1. Algorithms for MLH Retrieval<a class="headerlink" href="#algorithms-for-mlh-retrieval" title="Permalink to this headline">¶</a></h1>
+<h1>2. Algorithms for MLH Retrieval<a class="headerlink" href="#algorithms-for-mlh-retrieval" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound" id="secondarytoc">
 </div>
 <span class="target" id="module-ipf"></span><div class="section" id="idealized-point-function-method">
-<h2>1.1. Idealized point function method<a class="headerlink" href="#idealized-point-function-method" title="Permalink to this headline">¶</a></h2>
+<h2>2.1. Idealized point function method<a class="headerlink" href="#idealized-point-function-method" title="Permalink to this headline">¶</a></h2>
 <p>&#64;author: Burgos Andrea,
 Translated to Python by JLGF.</p>
 <p>This function obtains the residual layer height from an idealized profile.
@@ -215,11 +224,11 @@ the error between the idealized and the observed profiles through a minimum.</p>
 
 </div>
 <span class="target" id="module-wavelets"></span><div class="section" id="wavelet-covariant-transform-algorithm">
-<h2>1.2. Wavelet Covariant Transform Algorithm<a class="headerlink" href="#wavelet-covariant-transform-algorithm" title="Permalink to this headline">¶</a></h2>
+<h2>2.2. Wavelet Covariant Transform Algorithm<a class="headerlink" href="#wavelet-covariant-transform-algorithm" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 </div>
 <div class="section" id="description">
-<h3>1.2.1. Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
+<h3>2.2.1. Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
 <p>This toolbox contains functions used in the retrieval of the mixed-layer height following a wavelet covariant transform algorithm, from
 <a class="reference internal" href="#brooks2003" id="id1">[Bro03]</a>. Roughly, this method compares the local match or similarity between the Haar wavelet function and the backscattering profile.
 This could be interpreted as pattern search for a sudden jump. In fact, this same procedure is used to analyze electric signals and
@@ -384,7 +393,7 @@ MLH will change as the dilation changes, however, if the recursive method is not
 </dd></dl>
 
 <div class="section" id="linking-pages">
-<span id="id5"></span><h2>1.3. Linking Pages<a class="headerlink" href="#linking-pages" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2>2.3. Linking Pages<a class="headerlink" href="#linking-pages" title="Permalink to this headline">¶</a></h2>
 <p id="bibtex-bibliography-secondary-0"><table class="docutils citation" frame="void" id="brooks2003" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
@@ -415,10 +424,10 @@ MLH will change as the dilation changes, however, if the recursive method is not
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="tools.html" class="btn btn-neutral float-right" title="Ceilo toolbox (Auxiliary functions)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tools.html" class="btn btn-neutral float-right" title="3. Ceilo toolbox (Auxiliary functions)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="processing.html" class="btn btn-neutral float-left" title="Raw-file processing (.DAT)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="processing.html" class="btn btn-neutral float-left" title="1. Raw-file processing (.DAT)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
