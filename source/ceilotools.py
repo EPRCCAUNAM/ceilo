@@ -509,7 +509,6 @@ def algmlh(allprf,method,mlh,i,z,tarr,t,uplim):
 def cloudfilter(allprf,tarr,z,datestring):
 	r"""
 	Cloud filter
-	--------------
 
 	This function computes the cloud filter equations described in [Teschke (2008),Garcia-Franco (2017), Garcia-Franco et.al. (2018)]
 
