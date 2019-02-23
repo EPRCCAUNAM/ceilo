@@ -154,6 +154,5 @@ if h == 11 and m > 55 and am=='p.m.':
 	writemlh(rename+"\\" +rename+"_"+estacion+"_mlh.txt",tarr,mlh,estacion)
 	writehdf(read[2:],allprf,tarr,z,mlh,rename,rename+"\\" +rename+"_"+estacion+"_.hdf")
 	plt.savefig(rename+"\\" +rename+'_UNAM.png')
-	os.system("pscp -pw c31l0 -r "+rename+" ceilo@132.248.8.37:/home/D1_CEILO/UNAM/New_Backup")
 	os.system('rmdir '+rename+ '/s /q')
 plt.show()
