@@ -1,0 +1,283 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Ceilo code documentation of EPR group, CCA UNAM &mdash; Boundary Layer Ceilometer Retrieval 1.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Raw-file processing (.DAT)" href="processing.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> Boundary Layer Ceilometer Retrieval
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">Raw-file processing (.DAT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="secondary.html">1. Algorithms for MLH Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Ceilo toolbox (Auxiliary functions)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dftools.html">2. Data Frame toolbox (Auxiliary functions)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gallery.html">3. Gallery of Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="real_time.html">4. Real time-data</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Boundary Layer Ceilometer Retrieval</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Ceilo code documentation of EPR group, CCA UNAM</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/master.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <a class="reference internal image-reference" href="_images/RUOA_logo2.fw.png"><img alt="alternate text" class="align-left" src="_images/RUOA_logo2.fw.png" style="width: 109.5px; height: 97.5px;" /></a>
+<div class="section" id="ceilo-code-documentation-of-epr-group-cca-unam">
+<h1>Ceilo code documentation of EPR group, CCA UNAM<a class="headerlink" href="#ceilo-code-documentation-of-epr-group-cca-unam" title="Permalink to this headline">¶</a></h1>
+<p>These pages document the code use to process ceilometer raw data and interpret the backscattering signal to estimate mixed or boundary layer structure.
+This is part of work done by the Spectroscopy and Remote Sensing (EPR) Group at UNAM, Mexico using the Red Universitaria de Observatorios Atmosfericos (RUOA) instruments.</p>
+<p>Since 2008, a suite of commercial lidar systems, the Vaisala CL31 ceilometer, have been measuring backscattering profiles across different urban and remote parts of Mexico.
+This instrument is particularly useful for boundary layer studies due to the <span class="math notranslate nohighlight">\(\sim 10\)</span> [m] vertical resolution and a temporal resolution
+ranging from 2 to 16 s. Through the analysis of these profiles, <a class="reference internal" href="secondary.html#jlgf2018" id="id1">[GarciaFSB+18]</a> showed the typical diurnal and seasonal variability of the mixed-layer height.</p>
+<a class="reference internal image-reference" href="_images/ceilo.jpg"><img alt="alternate text" class="align-center" src="_images/ceilo.jpg" style="width: 375.0px; height: 285.0px;" /></a>
+<p>Figure 1. Ceilometer Vaisala CL31. This instrument is an optical active remote sensing instrument equipped with an eye-safe laser that interacts with atmospheric aerosols in such a way that
+the backscattered signal has been found to be a good proxy for aerosol distribution <a class="reference internal" href="secondary.html#brooks2003" id="id2">[Bro03]</a><a class="reference internal" href="secondary.html#jlgf2018" id="id3">[GarciaFSB+18]</a>.</p>
+<p>The documentation in this webpage serves to describe code functionality, present some examples of how the code may be adapted to process raw ceilometer data or, if this is the case, to estimate and visualize mixed layer height variability.
+Find index below.</p>
+<div class="toctree-wrapper compound" id="mastertoc">
+<p class="caption"><span class="caption-text">Contents:</span><a class="headerlink" href="#mastertoc" title="Permalink to this toctree">¶</a></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">Raw-file processing (.DAT)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="processing.html#main-file-loop-v1606-py">Main file  loop_v1606.py</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="secondary.html">1. Algorithms for MLH Retrieval</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="secondary.html#idealized-point-function-method">1.1. Idealized point function method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="secondary.html#wavelet-covariant-transform-algorithm">1.2. Wavelet Covariant Transform Algorithm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="secondary.html#description">1.2.1. Description</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="secondary.html#linking-pages">1.3. Linking Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Ceilo toolbox (Auxiliary functions)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#ceilo-tools-module">Ceilo tools module</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dftools.html">2. Data Frame toolbox (Auxiliary functions)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dftools.html#data-frame-tools-module">2.1. Data-Frame tools module</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gallery.html">3. Gallery of Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/plot_notebook.html">3.1. Contour-Plot of backscattering matrix</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="real_time.html">4. Real time-data</a></li>
+</ul>
+</div>
+<div class="section" id="linking-pages">
+<span id="id4"></span><h2>Linking Pages<a class="headerlink" href="#linking-pages" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><a class="reference external" href="https://www.atmosfera.unam.mx/ciencias-ambientales/espectroscopia-y-percepcion-remota/">Grupo de Espectroscopia y Percepcion Remota (EPR), Centro de Ciencias de la Atmosfera, UNAM</a>.</div>
+<div class="line"><a class="reference external" href="http://www.epr.atmosfera.unam.mx/ceilo/">Pagina de Lidar en vivo</a>.</div>
+<div class="line"><a class="reference external" href="https://www.atmosfera.unam.mx/ciencias-ambientales/espectroscopia-y-percepcion-remota/laboratorio-de-espectroscopia/">Laboratorio de Espectroscopia y Percepcion Remota</a>.</div>
+<div class="line"><a class="reference external" href="http://www.ruoa.unam.mx/">Red Universitaria de Observatorios Atmosfericos</a>.</div>
+</div>
+<div class="section" id="authors-and-contributions">
+<h3>Authors and Contributions<a class="headerlink" href="#authors-and-contributions" title="Permalink to this headline">¶</a></h3>
+<div class="line-block">
+<div class="line">Lead Scientists: <em>Grutter, M., Bezanilla A., Stremme W., Ruiz-Angulo A.</em></div>
+<div class="line">Main code authors: <em>Garcia-Franco J.L.</em>, <em>Stremme W.</em></div>
+<div class="line">Original code: <em>Stremme W.</em></div>
+<div class="line">Contributions from: <em>Burgos A.</em></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="processing.html" class="btn btn-neutral float-right" title="Raw-file processing (.DAT)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Garcia-Franco J. L.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
