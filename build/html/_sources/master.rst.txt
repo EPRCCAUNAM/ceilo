@@ -42,7 +42,7 @@ Find index below.
    tools
    dftools
    gallery
-   
+   real_time   
 
 
 .. _linking-pages:
