@@ -8,7 +8,7 @@
    :alt: alternate text
    :align: left
 
-Ceilo code documentation of EPR group, CCA UNAM 
+Ceilometer code documentation of EPR group, CCA UNAM 
 ===============================================================
 
 These pages document the code use to process ceilometer raw data and interpret the backscattering signal to estimate mixed or boundary layer structure. 
